@@ -1,4 +1,4 @@
-<!-- Add Staff Profile Modal -->
+<!-- Add/Edit Staff Profile Modal -->
 <div class="modal fade" id="addStaffProfile" role="dialog">
   <div class="modal-dialog">
   

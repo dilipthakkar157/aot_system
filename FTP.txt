@@ -1,0 +1,13 @@
+Database
+=========>
+Database Url : https://pma.wedos.net/
+User admin : a303332_ato
+password : h2DH87ir+:K
+Database server(Host) : md344.wedos.net
+Database name : d303332_ato
+
+FTP Server Details
+=====>
+303332.w32.wedos.net
+Username - w303332_ato
+Password - TM+i7wJj0-7

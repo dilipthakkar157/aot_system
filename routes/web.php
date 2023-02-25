@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\StaffProfileController;
+use App\Http\Controllers\CommonClassController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,11 +25,20 @@ Route::get('/', function () {
 Route::get('/admin/login', [LoginController::class, 'login'])->name('admin.login');
 Route::post('/admin/do-login', [LoginController::class, 'doLogin'])->name('admin.do-login');
 
+Route::get('/get-countries', [CommonClassController::class, 'getCounties'])->name('get-countries');
+Route::get('/get-states/{country_id}', [CommonClassController::class, 'getStates'])->name('get-states');
+Route::get('/get-cities/{state_id}', [CommonClassController::class, 'getCities'])->name('get-cities');
+
 Route::prefix('/admin')->middleware('adminAccess')->group(function () {
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 	Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
-	Route::get('/company-profile', [CompanyProfileController::class, 'index'])->name('admin.company-profile');
 	
+	Route::get('/company-profile', [CompanyProfileController::class, 'index'])->name('admin.company-profile');
+	Route::get('/company-profile/list', [CompanyProfileController::class, 'list'])->name('admin.company-profile.list');
+	Route::get('/company-profile/edit/{id}', [CompanyProfileController::class, 'edit'])->name('admin.staff-profile.edit');
+	Route::post('/company-profile/update', [CompanyProfileController::class, 'update'])->name('admin.company-profile.update');
+	Route::delete('/company-profile/delete/{id}', [CompanyProfileController::class, 'destroy'])->name('admin.company-profile.delete');
+
 	/*Staff Profile Routes Start*/
 	Route::get('/staff-profile', [StaffProfileController::class, 'index'])->name('admin.staff-profile');
 	Route::get('/staff-profile/list', [StaffProfileController::class, 'list'])->name('admin.staff-profile.list');

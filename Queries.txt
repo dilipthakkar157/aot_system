@@ -1,0 +1,6 @@
+1. What is LC? (Ex. 3LC of school, 3LC of user)
+2. In login, only the password field is there, there are no filed for username/email - Take 3LC as username
+3. For School, What entity should I need to consider (Ex Company, Staff Etc)? - Company
+4. For User, What entity is targeted, whether it targets the Company or something else? -  user always belongs under the Commapny, unless it is a super admin
+
+2.1.2	Mandatory staff profile - Is managed from the Admin panel? If yes, then Admin can create or edit existsing profile or not? - Yes
