@@ -11,4 +11,5 @@ class StaffProfile extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table='staff_profile';
+    protected $fillable = ['name','is_edit'];
 }
