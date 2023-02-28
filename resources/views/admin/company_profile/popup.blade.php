@@ -1,12 +1,12 @@
 <!-- Add/Edit Staff Profile Modal -->
 <div class="modal fade" id="editCompanyProfile" role="dialog">
-  <div class="modal-dialog" style="width: 50%">
+  <div class="modal-dialog">
   
     <!-- Modal content-->
-    <div class="modal-content">
+    <div class="modal-content" style="width: 150%;">
       <form method="POST" id="frmAddCompanyProfile" enctype="multipart/form-data">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
           <h4 class="modal-title" id="company_profile_header">Edit Company Profile</h4>
         </div>
         <div class="modal-body">
@@ -18,21 +18,21 @@
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="company_name">Company Name: <span class="required">*</span></label>
-                              <input type="text" class="form-control" id="company_name" placeholder="Enter company name" name="company_name">
+                              <input type="text" class="form-control" id="company_name" placeholder="Enter Company Name" name="company_name">
                               <span id="company_name-error" class="errors_class"></span>
                           </div>          
                       </div>
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="company_registered_business">Company Registered Business: <span class="required">*</span></label>
-                              <input type="text" class="form-control common_correspondence_class" id="company_registered_business" placeholder="Enter company name" name="company_registered_business">
+                              <input type="text" class="form-control common_correspondence_class" id="company_registered_business" placeholder="Enter Company Registered Business" name="company_registered_business">
                               <span id="company_registered_business-error" class="errors_class"></span>
                           </div>
                       </div>
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="zip_registered_address">Zip Registered Address: <span class="required">*</span></label>
-                              <input type="text" class="form-control common_correspondence_class" id="zip_registered_address" placeholder="Enter company name" name="zip_registered_address">
+                              <input type="text" class="form-control common_correspondence_class" id="zip_registered_address" placeholder="Zip Registered Address" name="zip_registered_address">
                               <span id="zip_registered_address-error" class="errors_class"></span>
                           </div>
                       </div>
@@ -82,7 +82,7 @@
                           <div class="form-group">
                               <label for="company_correspondence_address">Company Correspondence Business: <span class="required">*</span></label>
                               <input type="hidden" id="hid_company_correspondence_address">
-                              <input type="text" class="form-control" id="company_correspondence_address" placeholder="Enter company name" name="company_correspondence_address">
+                              <input type="text" class="form-control" id="company_correspondence_address" placeholder="Enter Company Correspondence Business" name="company_correspondence_address">
                               <span id="company_correspondence_address-error" class="errors_class"></span>
                           </div>
                       </div>
@@ -90,7 +90,7 @@
                           <div class="form-group">
                               <label for="zip_correspondence_address">Zip Correspondence Address: <span class="required">*</span></label>
                               <input type="hidden" id="hid_zip_correspondence_address">
-                              <input type="text" class="form-control" id="zip_correspondence_address" placeholder="Enter company name" name="zip_correspondence_address">
+                              <input type="text" class="form-control" id="zip_correspondence_address" placeholder="Enter Zip Correspondence Address" name="zip_correspondence_address">
                               <span id="zip_correspondence_address-error" class="errors_class"></span>
                           </div>
                       </div>
@@ -137,21 +137,21 @@
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="company_correspondence_email">Company Correspondence Email: <span class="required">*</span></label>
-                              <input type="text" class="form-control" id="company_correspondence_email" placeholder="Enter company name" name="company_correspondence_email">
+                              <input type="text" class="form-control" id="company_correspondence_email" placeholder="Enter Company Correspondence Email" name="company_correspondence_email">
                               <span id="company_correspondence_email-error" class="errors_class"></span>
                           </div>          
                       </div>
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="company_correspondence_telephone">Company Correspondence Telephone: <span class="required">*</span></label>
-                              <input type="text" class="form-control" id="company_correspondence_telephone" placeholder="Enter company name" name="company_correspondence_telephone">
+                              <input type="text" class="form-control" id="company_correspondence_telephone" placeholder="Enter Company Correspondence Telephone" name="company_correspondence_telephone">
                               <span id="company_correspondence_telephone-error" class="errors_class"></span>
                           </div>
                       </div>
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="company_registration_number">Company Registration Number: <span class="required">*</span></label>
-                              <input type="text" class="form-control" id="company_registration_number" placeholder="Enter company name" name="company_registration_number">
+                              <input type="text" class="form-control" id="company_registration_number" placeholder="Enter Company Registration Number" name="company_registration_number">
                               <span id="company_registration_number-error" class="errors_class"></span>
                           </div>
                       </div>
@@ -163,14 +163,14 @@
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="tax_registration_number">Tax Registration Number: <span class="required">*</span></label>
-                              <input type="text" class="form-control" id="tax_registration_number" placeholder="Enter company name" name="tax_registration_number">
+                              <input type="text" class="form-control" id="tax_registration_number" placeholder="Enter Tax Registration Number" name="tax_registration_number">
                               <span id="tax_registration_number-error" class="errors_class"></span>
                           </div>          
                       </div>
                       <div class="col-md-4">
                           <div class="form-group">
                               <label for="vat_number">Vat Number: <span class="required">*</span></label>
-                              <input type="text" class="form-control" id="vat_number" placeholder="Enter company name" name="vat_number">
+                              <input type="text" class="form-control" id="vat_number" placeholder="Enter Vat Number" name="vat_number">
                               <span id="vat_number-error" class="errors_class"></span>
                           </div>
                       </div>

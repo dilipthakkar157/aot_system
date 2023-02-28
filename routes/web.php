@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\StaffProfileController;
 use App\Http\Controllers\CommonClassController;
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/composer/update', function () {
+    // Call the ComposerUpdate command
+    Artisan::call('composer:update');
+
+    // Redirect back to the home page or another appropriate page
+    return redirect('/');
+});
 
 Route::get('/admin/login', [LoginController::class, 'login'])->name('admin.login');
 Route::post('/admin/do-login', [LoginController::class, 'doLogin'])->name('admin.do-login');

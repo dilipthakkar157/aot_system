@@ -1,8 +1,15 @@
 $(document).ready(function(){
 	$("#successMsg").css("display","none");
-	getCompanyProfileData();
 	token = $('meta[name="csrf-token"]').attr('content');
 	url = $('meta[name="baseUrl"]').attr('content');
+
+	$("#btnAddCompanyProfile").click(function(){
+		resetForm();
+		getCounties();
+		$("#company_profile_header").html("Add Company Profile");
+		$("#editCompanyProfile").modal();
+  	});
+
 	$("#hid_same_as_registered_business").val(0);
 	$("#same_as_registered_business").change(function(){
 		if($(this).prop('checked') == true) {
@@ -47,7 +54,8 @@ $(document).ready(function(){
 					$("#editCompanyProfile").modal('hide');					
 		    		$("#successMsg").css("display","block");
 		    		$("#successMsg").html(data['messages']);
-		    		getCompanyProfileData();
+		    		resetForm();
+		    		table.draw();
 		    	}
 	        },error: function (error) {
 	        	console.log(error);
@@ -55,6 +63,100 @@ $(document).ready(function(){
 	    });
 	});
 
+	var table = $("#tbl-company-profile").DataTable({
+		processing: true,
+      	serverSide: true,
+      	serverMethod: 'GET',
+      	ajax: url + "/admin/company-profile/list",
+      	dom: "Blfrtip",
+	    columns: [
+            // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'company_name', name: 'company_name'},
+            {data: 'company_registered_business', name: 'company_registered_business'},
+            {data: 'zip_registered_address', name: 'zip_registered_address'},
+            {data: 'country_registered_address', name: 'country_registered_address'},
+            {data: 'state_registered_address', name: 'state_registered_address'},
+            {data: 'city_registered_address', name: 'city_registered_address'},
+            {data: 'company_correspondence_address', name: 'company_correspondence_address'},
+            {data: 'zip_correspondence_address', name: 'zip_correspondence_address'},
+            {data: 'country_correspondence_address', name: 'country_correspondence_address'},
+            {data: 'state_correspondence_address', name: 'state_correspondence_address'},
+            {data: 'city_correspondence_address', name: 'city_correspondence_address'},
+            {data: 'company_correspondence_email', name: 'company_correspondence_email'},
+            {data: 'company_correspondence_telephone', name: 'company_correspondence_telephone'},
+            {data: 'company_registration_number', name: 'company_registration_number'},
+            {data: 'tax_registration_number', name: 'tax_registration_number'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+	});
+
+	$('body').on('click', '.editCompanyProfile', function () {
+		$("#company_profile_header").html("Edit Company Profile");
+		id = $(this).attr('data-id');
+		$(".errors_class").html("");
+		getCounties();
+		url = $('meta[name="baseUrl"]').attr('content');
+		html = '';
+		$.ajax({
+		    url : url + "/admin/company-profile/edit/"+id,
+		    method : "GET",
+		    dataType : "json",
+		    success : function(successRes) {
+		    	$("#id").val(successRes['data']['id']);
+		    	$("#company_name").val(successRes['data']['company_name']);
+		    	$("#company_registered_business").val(successRes['data']['company_registered_business']);
+		    	$("#zip_registered_address").val(successRes['data']['zip_registered_address']);
+
+		    	$("#hid_company_correspondence_address").val(successRes['data']['company_correspondence_address']);
+		    	$("#hid_zip_correspondence_address").val(successRes['data']['zip_correspondence_address']);
+		    	
+		    	$("#country_registered_address").val(successRes['data']['country_registered_address']);
+		    	getRegisteredState(0,successRes['data']['state_registered_address'], successRes['data']['city_registered_address']);
+
+		    	$("#company_correspondence_address").val(successRes['data']['company_correspondence_address']);
+		    	$("#zip_correspondence_address").val(successRes['data']['zip_correspondence_address']);
+
+		    	$("#country_correspondence_address").val(successRes['data']['country_correspondence_address']);
+
+		    	$("#hid_country_correspondence_address").val(successRes['data']['country_correspondence_address']);
+		    	$("#hid_state_correspondence_address").val(successRes['data']['state_correspondence_address']);
+		    	$("#hid_city_correspondence_address").val(successRes['data']['city_correspondence_address']);
+		    	
+		    	getRegisteredState(1,successRes['data']['state_correspondence_address'], successRes['data']['city_correspondence_address']);
+
+		    	$("#company_correspondence_email").val(successRes['data']['company_correspondence_email']);
+		    	$("#company_correspondence_telephone").val(successRes['data']['company_correspondence_telephone']);
+		    	$("#company_registration_number").val(successRes['data']['company_registration_number']);
+		    	$("#tax_registration_number").val(successRes['data']['tax_registration_number']);
+		    	$("#vat_number").val(successRes['data']['vat_number']);
+
+		    	$("#editCompanyProfile").modal();
+		    },error : function(failRes) {
+		    	console.log(failRes);
+		    }
+		});
+	});
+
+	$('body').on('click', '.deleteCompanyProfile', function () {
+		id = $(this).attr('data-id');
+		if (confirm('Are you sure you want to delete this record?')) {
+			$.ajax({
+				headers: {
+			        'X-CSRF-TOKEN': token
+			    },
+			    url : url + "/admin/company-profile/delete/"+id,
+			    method : "DELETE",
+			    dataType : "json",
+			    success : function(successRes) {
+			    	$("#successMsg").css("display","block");
+		    		$("#successMsg").html(successRes['messages']);
+		    		table.draw();
+			    },error : function(failRes) {
+			    	console.log(failRes);
+			    }
+			});
+		}
+	});
 });
 
 function getCompanyProfileData() {
@@ -101,48 +203,7 @@ function getCompanyProfileData() {
 }
 
 function editCompanyProfile(id) {
-	$(".errors_class").html("");
-	getCounties();
-	url = $('meta[name="baseUrl"]').attr('content');
-	html = '';
-	$.ajax({
-	    url : url + "/admin/company-profile/edit/"+id,
-	    method : "GET",
-	    dataType : "json",
-	    success : function(successRes) {
-	    	$("#id").val(successRes['data']['id']);
-	    	$("#company_name").val(successRes['data']['company_name']);
-	    	$("#company_registered_business").val(successRes['data']['company_registered_business']);
-	    	$("#zip_registered_address").val(successRes['data']['zip_registered_address']);
-
-	    	$("#hid_company_correspondence_address").val(successRes['data']['company_correspondence_address']);
-	    	$("#hid_zip_correspondence_address").val(successRes['data']['zip_correspondence_address']);
-	    	
-	    	$("#country_registered_address").val(successRes['data']['country_registered_address']);
-	    	getRegisteredState(0,successRes['data']['state_registered_address'], successRes['data']['city_registered_address']);
-
-	    	$("#company_correspondence_address").val(successRes['data']['company_correspondence_address']);
-	    	$("#zip_correspondence_address").val(successRes['data']['zip_correspondence_address']);
-
-	    	$("#country_correspondence_address").val(successRes['data']['country_correspondence_address']);
-
-	    	$("#hid_country_correspondence_address").val(successRes['data']['country_correspondence_address']);
-	    	$("#hid_state_correspondence_address").val(successRes['data']['state_correspondence_address']);
-	    	$("#hid_city_correspondence_address").val(successRes['data']['city_correspondence_address']);
-	    	
-	    	getRegisteredState(1,successRes['data']['state_correspondence_address'], successRes['data']['city_correspondence_address']);
-
-	    	$("#company_correspondence_email").val(successRes['data']['company_correspondence_email']);
-	    	$("#company_correspondence_telephone").val(successRes['data']['company_correspondence_telephone']);
-	    	$("#company_registration_number").val(successRes['data']['company_registration_number']);
-	    	$("#tax_registration_number").val(successRes['data']['tax_registration_number']);
-	    	$("#vat_number").val(successRes['data']['vat_number']);
-
-	    	$("#editCompanyProfile").modal();
-	    },error : function(failRes) {
-	    	console.log(failRes);
-	    }
-	});
+	
 }
 
 function getCounties() {
@@ -290,26 +351,13 @@ function getCorrespondenceCities(state_id,city_id){
 }
 
 function deleteCompanyProfile(id) {
-	if (confirm('Are you sure you want to delete this record?')) {
-		url = $('meta[name="baseUrl"]').attr('content');
-		token = $('meta[name="csrf-token"]').attr('content');
-		$.ajax({
-			headers: {
-		        'X-CSRF-TOKEN': token
-		    },
-		    url : url + "/admin/company-profile/delete/"+id,
-		    method : "DELETE",
-		    dataType : "json",
-		    success : function(successRes) {
-		    	// $("#id").val("0");
-		    	$("#successMsg").css("display","block");
-	    		$("#successMsg").html(successRes['messages']);
-	    		getCompanyProfileData();
-		    },error : function(failRes) {
-		    	console.log(failRes);
-		    }
-		});
-	}
+	
+}
+
+function resetForm() {
+	$("#id").val("0");
+	$('#frmAddCompanyProfile').trigger("reset");
+	$(".errors_class").html("");
 }
 
 function printErrorMsg(errors) {

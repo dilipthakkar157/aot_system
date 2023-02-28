@@ -9,7 +9,9 @@ use App\Models\Admin;
 class LoginController extends Controller
 {
     public function login(){
-    	return view('admin.login');
+        // dd(exec('composer update'));
+    	// return view('admin.login');
+        return view('admin.loginnew');
     }
 
     public function doLogin(Request $request){

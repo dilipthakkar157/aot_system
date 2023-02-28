@@ -5,16 +5,37 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StaffProfile;
+use DataTables;
 
 class StaffProfileController extends Controller
 {
     public function index() {
-    	return view('admin.staff_profile.list');
+    	return view('admin.staff_profile.listnew');
     }
 
     public function list() {
     	$result = StaffProfile::orderBy('id','DESC')->get();
-    	return response()->json(['status'=>true,'messages' => 'Staff profile data.', 'data'=>$result]);
+        $final_result = array();
+        if(count($result)>0){
+            foreach ($result as $key => $staff_profile) {
+                $final_result[$key]['id'] = $staff_profile->id;
+                $final_result[$key]['name'] = $staff_profile->name;
+            }
+        }
+
+        return Datatables::of($final_result)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+   
+                           $btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row['id'].'" data-original-title="Edit" class="edit btn btn-primary btn-sm editStaffProfile"><i class="fa fa-pencil"></i></a>';
+   
+                           $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row['id'].'" data-original-title="Delete" class="btn btn-danger btn-sm deleteStaffProfile"><i class="fa fa-trash"></i></a>';
+    
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+    	// return response()->json(['status'=>true,'messages' => 'Staff profile data.', 'data'=>$result]);
     }
 
     public function store(Request $request) {

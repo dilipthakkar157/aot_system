@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	token = $('meta[name="csrf-token"]').attr('content');
 	url = $('meta[name="baseUrl"]').attr('content');
-	getStaffProfileData();
+	// getStaffProfileData();
 	$("#successMsg").css("display","none");
 	$("#btnAddStaffProfile").click(function(){
 		$("#staff_profile_header").html("Add Profile");
@@ -28,13 +28,71 @@ $(document).ready(function(){
 					$("#addStaffProfile").modal('hide');					
 		    		$("#successMsg").css("display","block");
 		    		$("#successMsg").html(successRes['messages']);
-		    		getStaffProfileData();
+		    		// getStaffProfileData();
+		    		table.draw();
 		    	}
 		    },error : function(failRes) {
 		    	console.log(failRes);
 		    }
   		});
   	});
+
+  	$("#editPost").click(function(){
+		alert("Ok");
+	});
+
+  	var table = $("#tbl-staff-profile").DataTable({
+		processing: true,
+      	serverSide: true,
+      	serverMethod: 'GET',
+      	ajax: url + "/admin/staff-profile/list",
+      	dom: "Blfrtip",
+	    columns: [
+            // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'name', name: 'name'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+	});
+
+  	$('body').on('click', '.deleteStaffProfile', function () {
+  		id = $(this).attr('data-id');
+  		if (confirm('Are you sure you want to delete this record?')) {
+			$.ajax({
+				headers: {
+			        'X-CSRF-TOKEN': token
+			    },
+			    url : url + "/admin/staff-profile/delete/"+id,
+			    method : "DELETE",
+			    dataType : "json",
+			    success : function(successRes) {
+			    	$("#id").val("0");
+			    	$("#successMsg").css("display","block");
+		    		$("#successMsg").html(successRes['messages']);
+		    		table.draw();
+			    },error : function(failRes) {
+			    	console.log(failRes);
+			    }
+			});
+		}
+  	});
+
+  	$('body').on('click', '.editStaffProfile', function () {
+  		id = $(this).attr('data-id');
+  		$("#staff_profile_header").html("Edit Profile");
+		html = '';
+		$.ajax({
+		    url : url + "/admin/staff-profile/edit/"+id,
+		    method : "GET",
+		    dataType : "json",
+		    success : function(successRes) {
+		    	$("#profile_name").val(successRes['data']['name']);
+		    	$("#id").val(successRes['data']['id']);
+		    	$("#addStaffProfile").modal();
+		    },error : function(failRes) {
+		    	console.log(failRes);
+		    }
+		});
+	});  	
 });
 
 function printErrorMsg(errors) {
@@ -80,45 +138,4 @@ function getStaffProfileData() {
 	    	console.log(failRes);
 	    }
 	});
-}
-
-function editStaffProfile(id) {
-	$("#staff_profile_header").html("Edit Profile");
-	url = $('meta[name="baseUrl"]').attr('content');
-	html = '';
-	$.ajax({
-	    url : url + "/admin/staff-profile/edit/"+id,
-	    method : "GET",
-	    dataType : "json",
-	    success : function(successRes) {
-	    	$("#profile_name").val(successRes['data']['name']);
-	    	$("#id").val(successRes['data']['id']);
-	    	$("#addStaffProfile").modal();
-	    },error : function(failRes) {
-	    	console.log(failRes);
-	    }
-	});
-}
-
-function deleteStaffProfile(id) {
-	if (confirm('Are you sure you want to delete this record?')) {
-		url = $('meta[name="baseUrl"]').attr('content');
-		token = $('meta[name="csrf-token"]').attr('content');
-		$.ajax({
-			headers: {
-		        'X-CSRF-TOKEN': token
-		    },
-		    url : url + "/admin/staff-profile/delete/"+id,
-		    method : "DELETE",
-		    dataType : "json",
-		    success : function(successRes) {
-		    	$("#id").val("0");
-		    	$("#successMsg").css("display","block");
-	    		$("#successMsg").html(successRes['messages']);
-	    		getStaffProfileData();
-		    },error : function(failRes) {
-		    	console.log(failRes);
-		    }
-		});
-	}
 }
