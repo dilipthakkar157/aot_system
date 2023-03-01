@@ -4,3 +4,10 @@
 4. For User, What entity is targeted, whether it targets the Company or something else? -  user always belongs under the Commapny, unless it is a super admin
 
 2.1.2	Mandatory staff profile - Is managed from the Admin panel? If yes, then Admin can create or edit existsing profile or not? - Yes
+
+
+Company Register
+
+There are no filed in doc, for company to getting 3LC and Password, So i am taking company name for 3LC and password should be common for all companies(company@123).
+
+Did i need to send an email to company after registration with login details or apart from generate common password for companies in email did i need to send an reset password link where company can generate their password?

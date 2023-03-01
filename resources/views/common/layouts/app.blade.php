@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{ $pageTitle }}</title>
+	<title> {{ $pageTitle }} </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -57,16 +57,16 @@
 							<ul class="nav side-menu">
 
 							<li>
-								<a class="margin_l9" href="{{ route('admin.dashboard') }}"><img src="{{url('assets/images/dash_white.png')}}" class="icon_padding"> <span class="hide_big">Dashboard</span></a>
+								<a class="margin_l9" href="{{ route('comapany.dashboard') }}"><img src="{{url('assets/images/dash_white.png')}}" class="icon_padding"> <span class="hide_big">Dashboard</span></a>
 							</li>
 
-							<li class="mt-50">
+							<!-- <li class="mt-50">
 								<a class="margin_l9" href="{{ route('admin.staff-profile') }}"><img src="{{url('assets/images/profile-2user_white.png')}}" class="icon_padding"> <span class="hide_big">Staff Profile </span></a>
 							</li>
 
 							<li class="mt-50">
 								<a class="margin_l9" href="{{ route('admin.company-profile') }}"><img src="{{url('assets/images/book_white.png')}}" class="icon_padding"> <span class="hide_big">Company Profile </span></a>
-							</li>
+							</li> -->
 							
 							</ul>
 							</div>
@@ -179,7 +179,7 @@
 					    		    		<a class="dropdown-item" href=""> My documents</a>
 					    		    		<a class="dropdown-item" href=""> My profile</a>
 					    		    		<a class="dropdown-item" href="#"> My Merch</a>
-					    		        <a class="btn-other-orange orange-w mt-24" href="{{ route('admin.logout') }}">Log Out</a>
+					    		        <a class="btn-other-orange orange-w mt-24" href="{{ route('company.logout') }}">Log Out</a>
 					    		    
 
 					    		    </div>

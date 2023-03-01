@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CompanyProfile;
 use DataTables;
 
-class CompanyProfileController extends Controller
+class ManageCompanyProfileController extends Controller
 {
     public function index() {
     	return view('admin.company_profile.listnew');

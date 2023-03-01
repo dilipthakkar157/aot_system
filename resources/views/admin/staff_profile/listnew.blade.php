@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.app',['pageTitle' => 'Staff Profile'])
 
 @section('content')
 <script type="text/javascript" src="{{ url('js/staff_profile.js') }}"></script>

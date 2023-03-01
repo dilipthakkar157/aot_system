@@ -1,4 +1,4 @@
-@extends('admin.layouts.app',['pageTitle' => 'Dashboard'])
+@extends('common.layouts.app',['pageTitle' => 'Dashboard'])
 
 @section('content')
 <div class="">

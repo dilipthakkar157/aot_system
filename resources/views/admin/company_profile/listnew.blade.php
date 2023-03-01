@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.app',['pageTitle' => 'Company Profile'])
 
 @section('content')
 <style type="text/css">

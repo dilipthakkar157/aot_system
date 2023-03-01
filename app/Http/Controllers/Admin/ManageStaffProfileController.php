@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\StaffProfile;
 use DataTables;
 
-class StaffProfileController extends Controller
+class ManageStaffProfileController extends Controller
 {
     public function index() {
     	return view('admin.staff_profile.listnew');
