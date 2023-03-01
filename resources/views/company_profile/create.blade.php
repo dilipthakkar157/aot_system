@@ -47,14 +47,14 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-65 p-b-20" style="width: 60%">
-               <form class="login100-form validate-form" action="" method="POST">
+               <form class="login100-form validate-form" action="{{ route('add-company') }}" method="POST">
                   @csrf
                   <span class="login100-form-title p-b-50">
                   Company Profile
                   </span>
                   	<div class="col-md-6">
 				   		<div class="form-group">
-		                  	<div class="wrap-input100 validate-input" data-validate="Enter Company Name">
+		                  	<div class="wrap-input100 validate-input m-b-35" data-validate="Enter Company Name">
 			                     <input class="input100" type="text" name="company_name" id="company_name">
 			                     <span class="focus-input100" data-placeholder="Enter Company Name"></span>
 			                     @if($errors->has('company_name'))
@@ -65,7 +65,7 @@
           			</div>
           			<div class="col-md-6">
 				   		<div class="form-group">
-		                  	<div class="wrap-input100 validate-input" data-validate="Enter Company Correspondence Email">
+		                  	<div class="wrap-input100 validate-input m-b-35" data-validate="Enter Company Correspondence Email">
 			                     <input class="input100" type="text" name="company_correspondence_email" id="company_correspondence_email">
 			                     <span class="focus-input100" data-placeholder="Enter Company Correspondence Email"></span>
 			                     @if($errors->has('company_correspondence_email'))
@@ -76,7 +76,7 @@
 		            </div>
 		            <div class="col-md-6">
 				   		<div class="form-group">
-		                  	<div class="wrap-input100 validate-input" data-validate="Enter Company Correspondence Telephone">
+		                  	<div class="wrap-input100 validate-input m-b-35" data-validate="Enter Company Correspondence Telephone">
 			                     <input class="input100" type="text" name="company_correspondence_telephone" id="company_correspondence_telephone">
 			                     <span class="focus-input100" data-placeholder="Enter Company Correspondence Telephone"></span>
 			                     @if($errors->has('company_correspondence_telephone'))
@@ -87,7 +87,7 @@
 		            </div>
 		            <div class="col-md-6">
 				   		<div class="form-group">
-		                  	<div class="wrap-input100 validate-input" data-validate="Enter Company Registration Number">
+		                  	<div class="wrap-input100 validate-input m-b-35" data-validate="Enter Company Registration Number">
 			                     <input class="input100" type="text" name="company_registration_number" id="company_registration_number">
 			                     <span class="focus-input100" data-placeholder="Enter Company Registration Number"></span>
 			                     @if($errors->has('company_registration_number'))
@@ -98,7 +98,7 @@
 		            </div>
 		            <div class="col-md-6">
 				   		<div class="form-group">
-		                  	<div class="wrap-input100 validate-input" data-validate="Enter Tax Registration Number">
+		                  	<div class="wrap-input100 validate-input m-b-35" data-validate="Enter Tax Registration Number">
 			                     <input class="input100" type="text" name="tax_registration_number" id="tax_registration_number">
 			                     <span class="focus-input100" data-placeholder="Enter Tax Registration Number"></span>
 			                     @if($errors->has('tax_registration_number'))
@@ -109,7 +109,7 @@
 		            </div>
 		            <div class="col-md-6">
 				   		<div class="form-group">
-		                  	<div class="wrap-input100 validate-input" data-validate="Enter Vat Number">
+		                  	<div class="wrap-input100 validate-input m-b-35" data-validate="Enter Vat Number">
 			                     <input class="input100" type="text" name="vat_number" id="vat_number">
 			                     <span class="focus-input100" data-placeholder="Enter Vat Number"></span>
 			                     @if($errors->has('vat_number'))

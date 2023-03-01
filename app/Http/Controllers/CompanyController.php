@@ -68,11 +68,11 @@ class CompanyController extends Controller
             $new_time = $my_date_time = date('Y-m-d H:i:s', strtotime($time.' +1 hour'));
             $current_time = date('Y-m-d H:i:s');
             if(strtotime($current_time) > strtotime($new_time)) {
-                return redirect()->route('login')->with('error_msg','Token is expired!');    
+                return redirect()->route('common.login')->with('error_msg','Token is expired!');    
             }
             return view('company_profile.reset_password',['token'=>$request->token]);
         } else {
-            return redirect()->route('company')->with('error_msg','Invalid token!');
+            return redirect()->route('common.login')->with('error_msg','Invalid token!');
         }
     }
 
