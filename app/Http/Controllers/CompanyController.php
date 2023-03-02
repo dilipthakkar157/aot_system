@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CompanyProfile;
 use Mail;
-use App\Mail\CompanyRegistrationMail;
+// use App\Mail\CompanyRegistrationMail;
 
 class CompanyController extends Controller
 {
@@ -45,20 +45,13 @@ class CompanyController extends Controller
 		$CompanyProfile->save();
 
         $url = route("company.reset-password",['token'=>$reset_token]);
-        \Log::info($url);
-        // $mailData = [
-        //     'title' => 'Mail from ItSolutionStuff.com',
-        //     'body' => 'This is for testing email using smtp. <br>'.'<a href="'.$url.'">Reset Password</a>',
-        // ];
-        // Mail::to($request->company_correspondence_email)->send(new CompanyRegistrationMail($mailData));
-
-        // if (Mail::failures()) {
-        //     dd('Sorry! Please try again latter');
-        // }else{
-        //     dd('Great! Successfully send in your mail');
-        // }
-        return redirect()->route("company.reset-password",['token'=>$reset_token]);
-        // return redirect()->route('common.login')->with('success_msg','Email send to your email,Please check');
+        $data = array('name'=>$request->company_name,'url'=>$url,'email'=>$request->company_correspondence_email);
+        \Mail::send('emails.company_register_mail', $data, function($message) use ($data) {   
+            $message->to($data['email'], $data['name'])->subject
+                ('Reset Password');
+            $message->from('dilipthakkar157@gmail.com','Dilip Thakkar');
+        });
+        return redirect()->route('common.login')->with('success_msg','Password link successfully sent it to register email id,Please check');
     }
 
     public function resetPassword(Request $request) {

@@ -29,6 +29,11 @@ Route::get('/composer/update', function () {
     return redirect('/');
 });
 
+Route::get('/optimize', function () {
+    Artisan::call('optimize');
+    return redirect('/company');
+});
+
 Route::get('/company', [CompanyController::class, 'create'])->name('company');
 Route::post('/add-company', [CompanyController::class, 'store'])->name('add-company');
 Route::get('/company/reset-password', [CompanyController::class, 'resetPassword'])->name('company.reset-password');
@@ -69,4 +74,7 @@ Route::prefix('/admin')->middleware('adminAccess')->group(function () {
 Route::prefix('/company')->middleware('companyAccess')->group(function () {
 	Route::get('/dashboard', [CompanyDashboardController::class, 'index'])->name('comapany.dashboard');
 	Route::get('/logout', [CompanyController::class, 'companyProfileLogout'])->name('company.logout');
+	Route::get('/profile/edit', [CompanyDashboardController::class, 'editProfile'])->name('comapany.profile.edit');
+	Route::post('/profile/update', [CompanyDashboardController::class, 'updateProfile'])->name('comapany.profile.update');
+	Route::post('/change_password', [CompanyDashboardController::class, 'changePassword'])->name('change_password');
 });

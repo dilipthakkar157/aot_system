@@ -34,8 +34,13 @@
 	<!-- jQuery UI -->
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
+	<style type="text/css">
+		.errors_class{
+			color: red;
+		}
+	</style>
 </head>
+	@include('common.popup')
 	<body class="nav-sm">
 		<div class="container body" id="main">
 			<div class="main_container">
@@ -173,12 +178,12 @@
 					    		    		<div class="profile-name"></div>
 					    		    	</div>
 					    		    		<hr>
-					    		    		<a class="dropdown-item" data-toggle="modal" data-target="#exampleModalLongSSS_changepwd" href="#"> Change password</a>
-					    		    		<a class="dropdown-item" href="#"> My subscription</a>
-					    		    		<a class="dropdown-item" href=""> My public profile</a>
-					    		    		<a class="dropdown-item" href=""> My documents</a>
-					    		    		<a class="dropdown-item" href=""> My profile</a>
-					    		    		<a class="dropdown-item" href="#"> My Merch</a>
+					    		    		<a class="dropdown-item" href="javascript:void(0)" onclick="companyChangePassword()"> Change password</a>
+					    		    		<!-- <a class="dropdown-item" href="#"> My subscription</a> -->
+					    		    		<!-- <a class="dropdown-item" href=""> My public profile</a> -->
+					    		    		<!-- <a class="dropdown-item" href=""> My documents</a> -->
+					    		    		<a class="dropdown-item" onclick="editCompanyProfile()" id="editCompanyProfile" href="javascript:void(0)"> My profile</a>
+					    		    		<!-- <a class="dropdown-item" href="#"> My Merch</a> -->
 					    		        <a class="btn-other-orange orange-w mt-24" href="{{ route('company.logout') }}">Log Out</a>
 					    		    
 
@@ -223,5 +228,6 @@
 		<script src="{{url('assets/vendors/pdfmake/build/pdfmake.min.js')}}"></script>
 		<script src="{{url('assets/vendors/pdfmake/build/vfs_fonts.js')}}"></script>
 		<script src="{{url('assets/build/js/custom.min.js')}}"></script>
+		<script src="{{url('js/common.js')}}"></script>
 	</body>
 </html>	

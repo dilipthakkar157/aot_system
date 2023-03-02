@@ -123,6 +123,15 @@
 	                     Register
 	                     </button>
                   	</div>
+                  	<div class="login-more p-t-40" style="text-align: center;">
+					    <span class="txt1">
+					    Already have an account?
+					    </span>
+					    <a href="{{ route('common.login') }}" class="txt2">
+					    Sign in
+					    </a>
+					    </div>
+					</div>
                </form>
             </div>
 

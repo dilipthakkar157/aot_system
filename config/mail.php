@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
-            'port' => env('MAIL_PORT', 587),
+            'host' => env('MAIL_HOST', 'sandbox.smtp.mailtrap.io'),
+            'port' => env('MAIL_PORT', 2525),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => 'ahireakshay20@gmail.com',
-            'password' => '##@@123@@##akshay',
+            'username' => 'c3866c6f2ecdcc',
+            'password' => 'f975dcfbadd111',
             'timeout' => null,
         ],
 
@@ -91,8 +91,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'ahireakshay20@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Akshay Ahire'),
+        'address' => env('MAIL_FROM_ADDRESS', 'dilipthakkar157@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Dilip Thakkar'),
     ],
 
     /*

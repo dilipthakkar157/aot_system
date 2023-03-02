@@ -103,6 +103,22 @@ Login
 </button>
 </div>
 
+<div class="login-more p-t-40" style="text-align: center;">
+    <div class="m-b-8">
+    <a href="javascript:void(0);" class="txt2">
+    Forgot Password?
+    </a>
+    </div>
+    <div>
+    <span class="txt1">
+    Don’t have an account?
+    </span>
+    <a href="{{ route('company') }}" class="txt2">
+    Sign up
+    </a>
+    </div>
+</div>
+
 </form>
 </div>
 </div>
