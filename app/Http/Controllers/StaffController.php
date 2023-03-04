@@ -49,7 +49,7 @@ class StaffController extends Controller
                     'email' => 'required|email|unique:staff_profile,email,'.$request->id,
                     'citizenship' => 'required',
                     'date_of_birth' => 'required',
-                    'passport_id' => 'unique:staff_profile,passport_id,'.$request->id,
+                    // 'passport_id' => 'unique:staff_profile,passport_id,'.$request->id,
                     'role' => 'required',
                 ]);
             } else {
@@ -62,7 +62,7 @@ class StaffController extends Controller
                     'email' => 'required|email|unique:staff_profile,email',
                     'citizenship' => 'required',
                     'date_of_birth' => 'required',
-                    'passport_id' => 'unique:staff_profile,passport_id',
+                    // 'passport_id' => 'unique:staff_profile,passport_id',
                     'role' => 'required',
                 ]);
             }
@@ -111,6 +111,7 @@ class StaffController extends Controller
             $StaffProfile->date_of_birth = $dob;
             $StaffProfile->passport_id = $request->passport_id;
             $StaffProfile->role = $request->role;
+            $StaffProfile->email = $request->email;
             $StaffProfile->save();
 
             return response()->json(['status'=>true,'messages' => 'Staff profile successfully updated.', 'data'=>[] ]);

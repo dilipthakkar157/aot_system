@@ -26,7 +26,7 @@ $(document).ready(function(){
 	});
 
 	$("#btnAddStaff").click(function(){
-		resetForm();
+		resetForm1();
 		getRoles();
 		$("#staff_header").html("Add Staff");
 		$("#addStaff").modal();
@@ -47,7 +47,7 @@ $(document).ready(function(){
 		    	if(successRes['status'] == false) {
 		    		printErrorMsg(successRes['messages']);
 		    	} else {
-		    		resetForm();
+		    		resetForm1();
 					$("#addStaff").modal('hide');					
 		    		$("#successMsg").css("display","block");
 		    		$("#successMsg").html(successRes['messages']);
@@ -79,6 +79,7 @@ $(document).ready(function(){
 		    	$("#date_of_birth").val(successRes['data']['date_of_birth']);
 		    	$("#passport_id").val(successRes['data']['passport_id']);
 		    	$("#role").val(successRes['data']['role']);
+		    	$("#email").val(successRes['data']['email']);
 		    	getPermissions(successRes['data']['role']);
 		    	$("#addStaff").modal();
 		    },error : function(failRes) {
@@ -109,11 +110,12 @@ $(document).ready(function(){
   	});
 });
 
-function resetForm(){
+function resetForm1(){
 	$("#id").val("0");
 	$('#frmAddStaff').trigger("reset");
 	$(".errors_class").html("");
-}
+	$("#permissions").html('<tr><td colspan="4">No data found</td></tr>');
+}	
 
 function getRoles(){
 	url = $('meta[name="baseUrl"]').attr('content');

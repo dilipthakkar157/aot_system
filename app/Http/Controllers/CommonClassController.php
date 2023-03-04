@@ -58,11 +58,11 @@ class CommonClassController extends Controller
             'username'   => 'required',
             'password' => 'required|min:6'
         ]);
-
+        
         if (\Auth::guard('company_profile')->attempt(['username' => $request->username, 'password' => $request->password])) {
             return redirect()->route('comapany.dashboard');
         } else {
-            if (\Auth::guard('staff_profile')->attempt(['username' => $request->username, 'password' => $request->password])) {
+            if (\Auth::guard('staff_profile')->attempt(['three_letter_code' => $request->username, 'password' => $request->password])) {
                 return redirect()->route('staff.dashboard');
             } else {
                 return redirect()->route('common.login')->with('msg','Invalid details.');

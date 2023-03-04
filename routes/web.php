@@ -9,6 +9,7 @@ use App\Http\Controllers\CommonClassController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CompanyDashboardController;
+use App\Http\Controllers\StaffDashboardController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
