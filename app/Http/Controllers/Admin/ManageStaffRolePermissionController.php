@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\StaffProfile;
+use App\Models\StaffRole;
 use DataTables;
 
-class ManageStaffProfileController extends Controller
+class ManageStaffRolePermissionController extends Controller
 {
     public function index() {
     	return view('admin.staff_profile.listnew');
     }
 
     public function list() {
-    	$result = StaffProfile::orderBy('id','DESC')->get();
+    	$result = StaffRole::orderBy('id','DESC')->get();
         $final_result = array();
         if(count($result)>0){
             foreach ($result as $key => $staff_profile) {
                 $final_result[$key]['id'] = $staff_profile->id;
-                $final_result[$key]['name'] = $staff_profile->name;
+                $final_result[$key]['role'] = $staff_profile->role;
             }
         }
 
@@ -44,12 +44,11 @@ class ManageStaffProfileController extends Controller
             if($request->id>0){
                 $validator = \Validator::make($request->all(), [
                     'id' => 'required|numeric',
-                    'profile_name' => 'required|unique:staff_profile,name,'.$request->id
+                    'role' => 'required|unique:staff_role,role,'.$request->id
                 ]);
             } else {
                 $validator = \Validator::make($request->all(), [
-                    'id' => 'required|numeric',
-                    'profile_name' => 'required|unique:staff_profile,name'
+                    'role' => 'required|unique:staff_rolee,role'
                 ]);    
             }
 
@@ -57,12 +56,12 @@ class ManageStaffProfileController extends Controller
             if ($validator->fails()) {
                 return response()->json(['status'=>false,'messages' => $validator->errors(), 'data'=>[] ]);
             }
-            $ins_arr = ['name'=>$request->profile_name,'is_edit'=>1];
+            $ins_arr = ['role'=>$request->role,'is_edit'=>1];
             if($request->id == 0) {
-                StaffProfile::create($ins_arr);
+                StaffRole::create($ins_arr);
                 $msg = 'Profile successfully added.';
             } else {
-                StaffProfile::where('id',$request->id)->update(['name'=>$request->profile_name]);
+                StaffRole::where('id',$request->id)->update(['role'=>$request->role]);
                 $msg = 'Profile successfully updated.';
             }
     		return response()->json(['status'=>true,'messages' => $msg, 'data'=>[] ]);
@@ -72,12 +71,12 @@ class ManageStaffProfileController extends Controller
     }
 
     public function edit($id){
-        $result = StaffProfile::where('id',$id)->first();
+        $result = StaffRole::where('id',$id)->first();
         return response()->json(['status'=>true,'messages' => 'Sinlge staff profile data.', 'data'=>$result]);
     }
 
     public function destroy($id){
-        StaffProfile::where('id',$id)->delete();
+        StaffRole::where('id',$id)->delete();
         return response()->json(['status'=>true,'messages' => 'Staff profile successfully deleted.', 'data'=>[]]);   
     }
 }

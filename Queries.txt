@@ -11,3 +11,7 @@ Company Register
 There are no filed in doc, for company to getting 3LC and Password, So i am taking company name for 3LC and password should be common for all companies(company@123).
 
 Did i need to send an email to company after registration with login details or apart from generate common password for companies in email did i need to send an reset password link where company can generate their password?
+
+ForgotPassword - Staff  & Company - Done
+Login - Common (Based on Guard & Siderbar) - Done
+ChangePassword & Logout - Staff & Company - Done

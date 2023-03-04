@@ -239,3 +239,49 @@
     </div>
     </div>
 </div>
+
+
+<!-- Staff Change Password Modal -->
+<div class="modal fade" id="staffChangePassword" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <form method="POST" id="frmStaffChangePassword">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <h4 class="modal-title" id="staff_profile_header">Staff Change Password</h4>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-error" id="errorMsg"></div>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label for="current_password">Current Password: <span class="required">*</span></label>
+                      <input type="password" class="form-control" id="current_password" placeholder="Enter Current Password" name="current_password">
+                      <span id="current_password-error" class="errors_class"></span>
+                  </div>
+              </div>
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label for="new_password">New Password: <span class="required">*</span></label>
+                      <input type="password" class="form-control" id="new_password" placeholder="Enter New Password" name="new_password">
+                      <span id="new_password-error" class="errors_class"></span>
+                  </div>
+              </div>
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label for="confirm_new_password">Comfirm New Password: <span class="required">*</span></label>
+                      <input type="password" class="form-control" id="confirm_new_password" placeholder="Enter Confirm New Password" name="confirm_new_password">
+                      <span id="confirm_new_password-error" class="errors_class"></span>
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btnStaffChangePassword">Save</button>
+        </div>
+      </form>
+    </div>
+    </div>
+</div>

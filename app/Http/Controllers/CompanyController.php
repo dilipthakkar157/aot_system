@@ -17,7 +17,7 @@ class CompanyController extends Controller
     	$this->validate($request, [
             'company_name' => 'required|unique:company_profile,company_name',
 	        'company_correspondence_email' => 'required|email|unique:company_profile,company_correspondence_email',
-            'company_correspondence_telephone' => 'required|unique:company_profile,company_correspondence_telephone',
+            'company_correspondence_telephone' => 'required|numeric|digits:10|unique:company_profile,company_correspondence_telephone',
             'company_registration_number' => 'required|unique:company_profile,company_registration_number',
             'tax_registration_number' => 'required|unique:company_profile,tax_registration_number',
             'vat_number' => 'required|unique:company_profile,vat_number',
@@ -31,7 +31,8 @@ class CompanyController extends Controller
             $reset_token .= $characters[random_int(0, $charactersLength - 1)];
         }
 
-    	$username = substr($request->company_name, 0, 3);
+        $trim_cname = preg_replace('/\s+/', '', $request->company_name);
+     	$username = substr($trim_cname, 0, 3);
         $CompanyProfile = new CompanyProfile;
         $CompanyProfile->company_name = $request->company_name;
         $CompanyProfile->username = strtoupper($username);

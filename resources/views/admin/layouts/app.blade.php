@@ -61,7 +61,7 @@
 							</li>
 
 							<li class="mt-50">
-								<a class="margin_l9" href="{{ route('admin.staff-profile') }}"><img src="{{url('assets/images/profile-2user_white.png')}}" class="icon_padding"> <span class="hide_big">Staff Profile </span></a>
+								<a class="margin_l9" href="{{ route('admin.staff-role-permission') }}"><img src="{{url('assets/images/profile-2user_white.png')}}" class="icon_padding"> <span class="hide_big">Staff Role </span></a>
 							</li>
 
 							<li class="mt-50">

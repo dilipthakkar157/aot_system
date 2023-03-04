@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('staff_profile', function (Blueprint $table) {
+        Schema::create('staff_action_modules', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->boolean('is_edit')->default(0)->comment('0=Non Editable,1=Editable');
-            $table->softDeletes();
+            $table->string('action')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('staff_profile');
+        Schema::dropIfExists('staff_action_modules');
     }
 };

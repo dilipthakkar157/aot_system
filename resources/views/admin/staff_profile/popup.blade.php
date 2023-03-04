@@ -12,9 +12,9 @@
         <form method="POST" id="frmAddStaffProfile">
             <input type="hidden" name="id" id="id" value="0">
             <div class="form-group">
-              <label for="profile_name">Profile Name: <span class="required">*</span></label>
-              <input type="text" class="form-control" id="profile_name" placeholder="Enter profile name" name="profile_name">
-              <span id="profile_name-error" class="errors_class"></span>
+              <label for="role">Role: <span class="required">*</span></label>
+              <input type="text" class="form-control" id="role" placeholder="Enter role" name="role">
+              <span id="role-error" class="errors_class"></span>
             </div>
         </form>
       </div>

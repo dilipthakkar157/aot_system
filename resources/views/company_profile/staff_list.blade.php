@@ -1,15 +1,20 @@
-@extends('admin.layouts.app',['pageTitle' => 'Staff Profile'])
+@extends('common.layouts.app',['pageTitle' => 'Staff Profile'])
 
 @section('content')
-<script type="text/javascript" src="{{ url('js/staff_profile.js') }}"></script>
+<style type="text/css">
+    .required, .errors_class {
+        color: red;
+    }
+  </style>
+<script type="text/javascript" src="{{ url('js/staff.js') }}"></script>
 <div class="">
    <div class="page-title">
       <div class="title_left">
-         <h3 style="white-space: nowrap;">Staff Roles</h3>
+         <h3 style="white-space: nowrap;">Staff Profiles</h3>
       </div>
    </div>
    <div class="clearfix"></div>
-   @include('admin.staff_profile.popup')
+   @include('company_profile.staff_popup')
    <div class="row">
       <div class="col-md-12 col-sm-12 ">
          <div class="x_panel">
@@ -26,7 +31,7 @@
 
                      <!-- <a href="#" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-new-license btn-other"><i class="fa fa-upload icon-export"></i> Export Data</a> -->
 
-                     <a href="javascript:void(0);" class="btn btn-new-license btn-add" id="btnAddStaffProfile"><i class="fa fa-plus icon-add"></i> Add Role</a>
+                     <a href="javascript:void(0)" class="btn btn-new-license btn-add" id="btnAddStaff"><i class="fa fa-plus icon-add"></i> Add Staff Profile</a>
                   </li>
                </ul>
             </div>
@@ -37,9 +42,18 @@
                   <div class="col-sm-12 alert alert-danger error-msg hide"></div>
                    <div class="col-sm-12">
                      <div class="card-box table-responsive">
-                        <table id="tbl-staff-profile" class="" style="width:100%">
+                        <table id="tbl-staff" class="" style="width:100%">
                            <thead>
                                <tr>
+                                   <th>Three Letter Code</th>
+                                   <th>Employee No</th>
+                                   <th>Prefix</th>
+                                   <th>First Name</th>
+                                   <th>Middle Name</th>
+                                   <th>Last Name</th>
+                                   <th>Citizenship</th>
+                                   <th>Date Of Birth</th>
+                                   <th>Passport Id</th>
                                    <th>Role</th>
                                    <th>Action</th>
                                  </tr>

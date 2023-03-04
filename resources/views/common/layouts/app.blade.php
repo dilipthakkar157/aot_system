@@ -61,17 +61,21 @@
 							<div class="menu_section">
 							<ul class="nav side-menu">
 
+							@if(\Auth::guard('staff_profile')->check())
+							<li>
+								<a class="margin_l9" href="{{ route('staff.dashboard') }}"><img src="{{url('assets/images/dash_white.png')}}" class="icon_padding"> <span class="hide_big">Dashboard</span></a>
+							</li>
+							@elseif(\Auth::guard('company_profile')->check())	
 							<li>
 								<a class="margin_l9" href="{{ route('comapany.dashboard') }}"><img src="{{url('assets/images/dash_white.png')}}" class="icon_padding"> <span class="hide_big">Dashboard</span></a>
 							</li>
 
-							<!-- <li class="mt-50">
-								<a class="margin_l9" href="{{ route('admin.staff-profile') }}"><img src="{{url('assets/images/profile-2user_white.png')}}" class="icon_padding"> <span class="hide_big">Staff Profile </span></a>
-							</li>
-
 							<li class="mt-50">
-								<a class="margin_l9" href="{{ route('admin.company-profile') }}"><img src="{{url('assets/images/book_white.png')}}" class="icon_padding"> <span class="hide_big">Company Profile </span></a>
-							</li> -->
+								<a class="margin_l9" href="{{ route('company.staff') }}"><img src="{{url('assets/images/profile-2user_white.png')}}" class="icon_padding"> <span class="hide_big">Staff Profile </span></a>
+							</li>
+							@endif
+
+							
 							
 							</ul>
 							</div>
@@ -172,21 +176,25 @@
 
 					    		    	<div class="border-profile"></div>
 					    		    	
-
-					    		    	<div class="d-flexx mt-24">
-					    		    		<div class=""> <img class="profile-img" height="50" width="50" src="{{ url('assets/images/dummy.jpeg') }}" alt=""></div>
-					    		    		<div class="profile-name"></div>
-					    		    	</div>
+					    		    	@if(\Auth::guard('staff_profile')->check())
+					    		    		<div class="d-flexx mt-24">
+						    		    		<div class=""> <img class="profile-img" height="50" width="50" src="{{ url('assets/images/dummy.jpeg') }}" alt=""></div>
+						    		    		<div class="profile-name"></div>
+						    		    	</div>
+					    		    		<hr>
+					    		    		<a class="dropdown-item" href="javascript:void(0)" onclick="staffChangePassword()"> Change password</a>
+					    		    		<a class="dropdown-item" onclick="editStaffProfile()" id="editCompanyProfile" href="javascript:void(0)"> My profile</a>
+					    		        	<a class="btn-other-orange orange-w mt-24" href="{{ route('staff.logout') }}">Log Out</a>
+					    		    	@elseif(\Auth::guard('company_profile')->check())
+					    		    		<div class="d-flexx mt-24">
+						    		    		<div class=""> <img class="profile-img" height="50" width="50" src="{{ url('assets/images/dummy.jpeg') }}" alt=""></div>
+						    		    		<div class="profile-name"></div>
+						    		    	</div>
 					    		    		<hr>
 					    		    		<a class="dropdown-item" href="javascript:void(0)" onclick="companyChangePassword()"> Change password</a>
-					    		    		<!-- <a class="dropdown-item" href="#"> My subscription</a> -->
-					    		    		<!-- <a class="dropdown-item" href=""> My public profile</a> -->
-					    		    		<!-- <a class="dropdown-item" href=""> My documents</a> -->
 					    		    		<a class="dropdown-item" onclick="editCompanyProfile()" id="editCompanyProfile" href="javascript:void(0)"> My profile</a>
-					    		    		<!-- <a class="dropdown-item" href="#"> My Merch</a> -->
-					    		        <a class="btn-other-orange orange-w mt-24" href="{{ route('company.logout') }}">Log Out</a>
-					    		    
-
+					    		        	<a class="btn-other-orange orange-w mt-24" href="{{ route('company.logout') }}">Log Out</a>
+					    		    	@endif
 					    		    </div>
 					    		</li>
 					    	</ul>

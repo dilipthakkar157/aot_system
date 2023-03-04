@@ -79,6 +79,31 @@ $(document).ready(function(){
 	        }
 	    });
 	});
+
+	$("#btnStaffChangePassword").on('click', function(e){
+		e.preventDefault();
+	    $.ajax({
+	    	headers: {
+		        'X-CSRF-TOKEN': token
+		    },
+	        url: url + "/staff/change_password",
+	        type: 'POST',
+	        data: $("#frmStaffChangePassword").serialize(),
+	        dataType : "json",
+	        success: function (data) {
+	            if(data['status'] == false) {
+		    		printErrorMsg(data['messages']);
+		    	} else {
+					$("#staffChangePassword").modal('hide');
+		    		alert("Password successfully changed.");
+		    		window.location.href = url + "/staff/logout";
+		    	}
+	        },error: function (error) {
+	        	console.log(error);
+	        }
+	    });
+	});
+
 });
 
 function editCompanyProfile() {
@@ -316,4 +341,9 @@ function printErrorMsg(errors) {
 function companyChangePassword(){
 	$(".errors_class").html("");
 	$("#companyChangePassword").modal();
+}
+
+function staffChangePassword(){
+	$(".errors_class").html("");
+	$("#staffChangePassword").modal();
 }

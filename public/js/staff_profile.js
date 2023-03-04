@@ -4,21 +4,21 @@ $(document).ready(function(){
 	// getStaffProfileData();
 	$("#successMsg").css("display","none");
 	$("#btnAddStaffProfile").click(function(){
-		$("#staff_profile_header").html("Add Profile");
+		$("#staff_profile_header").html("Add Role");
 		resetForm();
 		$("#addStaffProfile").modal();
   	});
 
   	$("#btnSubmitStaffProfile").click(function(){
-  		profile_name = $("#profile_name").val();
+  		role = $("#role").val();
   		id = $("#id").val();
   		$.ajax({
   			headers: {
 		        'X-CSRF-TOKEN': token
 		    },
-		    url : url + "/admin/staff-profile/store",
+		    url : url + "/admin/staff-role-permission/store",
 		    method : "POST",
-		    data : {"profile_name":profile_name,"id":id},
+		    data : {"role":role,"id":id},
 		    dataType : "json",
 		    success : function(successRes) {
 		    	if(successRes['status'] == false) {
@@ -37,19 +37,15 @@ $(document).ready(function(){
   		});
   	});
 
-  	$("#editPost").click(function(){
-		alert("Ok");
-	});
-
   	var table = $("#tbl-staff-profile").DataTable({
 		processing: true,
       	serverSide: true,
       	serverMethod: 'GET',
-      	ajax: url + "/admin/staff-profile/list",
+      	ajax: url + "/admin/staff-role-permission/list",
       	dom: "Blfrtip",
 	    columns: [
             // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'name', name: 'name'},
+            {data: 'role', name: 'role'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
 	});
@@ -61,7 +57,7 @@ $(document).ready(function(){
 				headers: {
 			        'X-CSRF-TOKEN': token
 			    },
-			    url : url + "/admin/staff-profile/delete/"+id,
+			    url : url + "/admin/staff-role-permission/delete/"+id,
 			    method : "DELETE",
 			    dataType : "json",
 			    success : function(successRes) {
@@ -78,14 +74,14 @@ $(document).ready(function(){
 
   	$('body').on('click', '.editStaffProfile', function () {
   		id = $(this).attr('data-id');
-  		$("#staff_profile_header").html("Edit Profile");
+  		$("#staff_profile_header").html("Edit Role");
 		html = '';
 		$.ajax({
-		    url : url + "/admin/staff-profile/edit/"+id,
+		    url : url + "/admin/staff-role-permission/edit/"+id,
 		    method : "GET",
 		    dataType : "json",
 		    success : function(successRes) {
-		    	$("#profile_name").val(successRes['data']['name']);
+		    	$("#role").val(successRes['data']['role']);
 		    	$("#id").val(successRes['data']['id']);
 		    	$("#addStaffProfile").modal();
 		    },error : function(failRes) {
@@ -111,7 +107,7 @@ function getStaffProfileData() {
 	url = $('meta[name="baseUrl"]').attr('content');
 	html = '';
 	$.ajax({
-	    url : url + "/admin/staff-profile/list",
+	    url : url + "/admin/staff-role-permission/list",
 	    method : "GET",
 	    dataType : "json",
 	    success : function(successRes) {
