@@ -104,6 +104,29 @@ $(document).ready(function(){
 	    });
 	});
 
+	$("#btnUpdateStaffProfileData").click(function(){
+  		$.ajax({
+  			headers: {
+		        'X-CSRF-TOKEN': token
+		    },
+		    url : url + "/staff/update",
+		    method : "POST",
+		    data : $("#frmUpdateStaffProfile").serialize(),
+		    dataType : "json",
+		    success : function(successRes) {
+		    	if(successRes['status'] == false) {
+		    		printErrorMsg(successRes['messages']);
+		    	} else {
+		    		resetForm1();
+					$("#updateStaffProfile").modal('hide');
+					alert("Profile successfully updated");
+		    	}
+		    },error : function(failRes) {
+		    	console.log(failRes);
+		    }
+  		});
+  	});
+
 });
 
 function editCompanyProfile() {
@@ -332,6 +355,12 @@ function resetForm() {
 	$(".errors_class").html("");
 }
 
+function resetForm1(){
+	$('#frmUpdateStaffProfile').trigger("reset");
+	$(".errors_class").html("");
+	$("#permissions").html('<tr><td colspan="4">No data found</td></tr>');
+}
+
 function printErrorMsg(errors) {
 	$.each(errors, function(k,v) {
 		$("#"+k+"-error").html(v);
@@ -346,4 +375,80 @@ function companyChangePassword(){
 function staffChangePassword(){
 	$(".errors_class").html("");
 	$("#staffChangePassword").modal();
+}
+
+function editStaffProfile(){
+    getRoles();
+	$.ajax({
+    	headers: {
+	        'X-CSRF-TOKEN': token
+	    },
+        url: url + "/staff/edit_profile",
+        type: 'GET',
+        dataType : "json",
+        success: function (successRes) {
+            console.log(successRes);
+            $("#three_letter_code").val(successRes['data']['three_letter_code']);
+	    	$("#prefix").val(successRes['data']['prefix']);
+	    	$("#name").val(successRes['data']['name']);
+	    	$("#middle_name").val(successRes['data']['middle_name']);
+	    	$("#last_name").val(successRes['data']['last_name']);
+	    	$("#citizenship").val(successRes['data']['citizenship']);
+	    	$("#date_of_birth").val(successRes['data']['date_of_birth']);
+	    	$("#passport_id").val(successRes['data']['passport_id']);
+	    	$("#role").val(successRes['data']['role']);
+	    	$("#email").val(successRes['data']['email']);
+	    	getPermissions(successRes['data']['role']);
+            $("#updateStaffProfile").modal();
+        },error: function (error) {
+        	console.log(error);
+        }
+    });
+}
+
+function getRoles(){
+	url = $('meta[name="baseUrl"]').attr('content');
+	country = '';
+	$.ajax({
+	    url : url + "/get-roles",
+	    method : "GET",
+	    dataType : "json",
+	    success : function(successRes) {
+	    	country = '<option value="">Select Role</option>';
+	    	$.each(successRes['data'], function(k,v) {
+	    		country += '<option value="'+v['id']+'">'+v['role']+'</option>';
+	    	});
+	    	$("#role").html(country);
+	    },error : function(failRes) {
+	    	console.log(failRes);
+	    }
+	});
+}
+
+function getPermissions(role_id){
+	url = $('meta[name="baseUrl"]').attr('content');
+	var permissions = '';
+	$.ajax({
+	    url : url + "/get-permissions/"+role_id,
+	    method : "GET",
+	    dataType : "json",
+	    success : function(successRes) {
+			permissions += '<tr>';
+			if(successRes['data'].length>0){
+		    	$.each(successRes['data'], function(k,v) {
+		    		act2 = '';
+		    		for (var i = 0; i < v['actions'].length; i++) {
+		    			act2 += '<li>'+v['actions'][i]+'</li><br/>';
+		    		}
+		    		permissions += '<td>'+act2+'</td>';
+		    	});
+		    	permissions += '</tr>';
+		    } else {
+		    	permissions += '<tr><td colspan="4">No data found</td></tr>';
+		    }
+	    	$("#permissions").html(permissions);
+	    },error : function(failRes) {
+	    	console.log(failRes);
+	    }
+	});
 }

@@ -100,5 +100,6 @@ Route::prefix('/staff')->middleware('staffAccess')->group(function () {
 	Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('staff.dashboard');
 	Route::get('/logout', [StaffDashboardController::class, 'logout'])->name('staff.logout');
 	Route::post('/change_password', [StaffDashboardController::class, 'changePassword'])->name('staff.change_password');
-
+	Route::get('/edit_profile', [StaffDashboardController::class, 'editProfile'])->name('staff.edit_profile');	
+	Route::post('/update', [StaffDashboardController::class, 'updateStaff'])->name('staff.update');
 });

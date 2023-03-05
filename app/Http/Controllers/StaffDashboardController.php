@@ -43,4 +43,60 @@ class StaffDashboardController extends Controller
             return response()->json(['status'=>false,'messages' => $e->getMessage(), 'data'=>[] ]);
         }
     }
+
+    public function editProfile(){
+        $id = \Auth::guard('staff_profile')->user()->id;
+        $res = StaffProfile::where('id',$id)->first();
+        $rep_dob = str_replace("-",'/',$res->date_of_birth);
+        $dob = date('d/m/Y', strtotime($rep_dob));
+        $res->date_of_birth = $dob;
+        return response()->json(['status'=>true,'messages' => 'Single successfully updated.', 'data'=>$res]);
+    }
+
+    public function updateStaff(Request $request){
+        try {
+            $id = \Auth::guard('staff_profile')->user()->id;
+            $validator = \Validator::make($request->all(), [
+                'three_letter_code' => 'required|unique:staff_profile,three_letter_code,'.$id,
+                'prefix' => 'required',
+                'name' => 'required',
+                // 'middle_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|email|unique:staff_profile,email,'.$id,
+                'citizenship' => 'required',
+                'date_of_birth' => 'required',
+                // 'passport_id' => 'unique:staff_profile,passport_id,'.$request->id,
+                'role' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['status'=>false,'messages' => $validator->errors(), 'data'=>[] ]);
+            }
+
+            if(strlen($request->three_letter_code)>3){
+                $error['three_letter_code'][0] = 'Only three letter code allowed.';
+                return response()->json(['status'=>false,'messages' => $error, 'data'=>[] ]);   
+            }
+
+            $rep_dob = str_replace("/",'-',$request->date_of_birth);
+            $dob = date('Y-m-d', strtotime($rep_dob));
+
+            $StaffProfile = StaffProfile::updateOrCreate(array('id' => $id));
+            $StaffProfile->three_letter_code = $request->three_letter_code; 
+            $StaffProfile->prefix = $request->prefix;
+            $StaffProfile->name = $request->name;
+            $StaffProfile->middle_name = $request->middle_name;
+            $StaffProfile->last_name = $request->last_name;
+            $StaffProfile->citizenship = $request->citizenship;
+            $StaffProfile->date_of_birth = $dob;
+            $StaffProfile->passport_id = $request->passport_id;
+            $StaffProfile->role = $request->role;
+            $StaffProfile->email = $request->email;
+            $StaffProfile->save();
+
+            return response()->json(['status'=>true,'messages' => 'Staff profile successfully updated.', 'data'=>[] ]);
+        } catch (Exception $e) {
+            return response()->json(['status'=>false,'messages' => $e->getMessage(), 'data'=>[] ]);
+        }
+    }
 }
