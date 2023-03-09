@@ -11,6 +11,8 @@ use App\Models\StaffProfile;
 use App\Models\StaffRole;
 use App\Models\StaffRolePermission;
 use App\Models\StaffAction;
+use App\Models\Customer;
+use DB;
 
 class CommonClassController extends Controller
 {
@@ -59,7 +61,7 @@ class CommonClassController extends Controller
             'password' => 'required|min:6'
         ]);
         
-        if (\Auth::guard('company_profile')->attempt(['username' => $request->username, 'password' => $request->password])) {
+        if (\Auth::guard('company_profile')->attempt(['three_letter_code' => $request->username, 'password' => $request->password])) {
             return redirect()->route('comapany.dashboard');
         } else {
             if (\Auth::guard('staff_profile')->attempt(['three_letter_code' => $request->username, 'password' => $request->password])) {
@@ -75,52 +77,136 @@ class CommonClassController extends Controller
     }
 
     public function doForgotpassword(Request $request){
-        $this->validate($request, [
-            'email_id'   => 'required|email'
-        ]);
-        $company_flag = $staff_flag = 0;
-        $file = $url = '';
-        $data = array();
-        $length = 32;
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $reset_token = '';
-        for ($i = 0; $i < $length; $i++) {
-            $reset_token .= $characters[random_int(0, $charactersLength - 1)];
-        }
+        DB::beginTransaction();
+        try {
+            $this->validate($request, [
+                'three_latter_code' => 'required',
+                'email_id'   => 'required|email'
+            ]);
+            $company_flag = $staff_flag = $customer_flag = 0;
+            $file = $url = '';
+            $data = array();
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $reset_token = generateToken($characters,32);
 
-        $res = CompanyProfile::where('company_correspondence_email',$request->email_id)->first();
-        if(!empty($res)){
-            
-            $url = route("company.reset-password",['token'=>$reset_token]);
-            $data = array('name'=>$res->company_name,'url'=>$url,'email'=>$res->company_correspondence_email);
-            $file = 'emails.company_register_mail';
-            $company_flag = 1;
-        } else {
-            $res = StaffProfile::where('email',$request->email_id)->first();
+            $res = CompanyProfile::where(['three_letter_code'=>$request->three_latter_code,'company_correspondence_email'=>$request->email_id])->first();
             if(!empty($res)){
-                $url = route("staff.reset-password",['token'=>$reset_token]);
-                $data = array('name'=>$res->name." ".$res->last_name,'url'=>$url,'email'=>$res->email);
-                $file = 'emails.staff_register_mail';
-                $staff_flag = 1;
+                $type = 1;
+                $name = $res->company_name;
+                $company_flag = 1;
             } else {
-                return redirect()->route('common.forgotpassword')->with('error_msg','Invalid email id.');
-            }   
-        }
-
-        if($company_flag==1 || $staff_flag==1){
-            \Mail::send($file, $data, function($message) use ($data) {   
-                $message->to($data['email'], $data['name'])->subject
-                    ('Reset Password');
-                $message->from('dilipthakkar157@gmail.com','Dilip Thakkar');
-            });
-            if($company_flag==1){
-                CompanyProfile::where('company_correspondence_email',$request->email_id)->update(['reset_token'=>$reset_token,'reset_token_date_time'=>date('Y-m-d H:i:s')]);
-            }elseif($staff_flag==1){
-                StaffProfile::where('email',$request->email_id)->update(['reset_token'=>$reset_token,'reset_token_date_time'=>date('Y-m-d H:i:s')]);
+                $res2 = StaffProfile::where(['three_letter_code'=>$request->three_latter_code,'email'=>$request->email_id])->first();
+                if(!empty($res2)){
+                    $type = 2;
+                    $name = $res2->name." ".$res2->last_name;
+                    $staff_flag = 1;
+                } else {
+                    $res3 = Customer::where(['three_letter_code'=>$request->three_latter_code,'email'=>$request->email_id])->first();
+                    if(!empty($res2)){
+                        $type = 3;
+                        $name = $res3->name." ".$res3->last_name;
+                        $customer_flag = 1;
+                    } else {
+                        return redirect()->route('common.forgotpassword')->with('error_msg','Invalid email id.');
+                    }
+                }   
             }
 
-            return redirect()->route('common.forgotpassword')->with('success_msg','Password link successfully sent it to register email id,Please check');
+            if($company_flag==1 || $staff_flag==1 || $customer_flag==1){
+                $url = route("common.reset-password",['token'=>$reset_token,'type'=>base64_encode($type)]);
+                $data = array(
+                    'name' => $name,
+                    'username' => strtoupper($request->three_latter_code),
+                    'url' => $url,
+                    'email' => $request->email_id
+                );
+                sendRegistrationMail($data,'emails.common_register_mail','Reset Password');
+
+                if($company_flag==1){
+                    CompanyProfile::where(['three_letter_code'=>$request->three_latter_code,'company_correspondence_email'=>$request->email_id])->update(['reset_token'=>$reset_token,'reset_token_date_time'=>date('Y-m-d H:i:s')]);
+                }elseif($staff_flag==1){
+                    StaffProfile::where(['three_letter_code'=>$request->three_latter_code,'email'=>$request->email_id])->update(['reset_token'=>$reset_token,'reset_token_date_time'=>date('Y-m-d H:i:s')]);
+                }elseif($customer_flag==1){
+                    Customer::where(['three_letter_code'=>$request->three_latter_code,'email'=>$request->email_id])->update(['reset_token'=>$reset_token,'reset_token_date_time'=>date('Y-m-d H:i:s')]);
+                }
+                DB::commit();
+                return redirect()->route('common.forgotpassword')->with('success_msg','Password link successfully sent it to register email id,Please check');
+            }
+
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->route('customer.register')->with('error_msg','Something went wrong');
+        }
+    }
+
+    public function resetPassword(Request $request) {
+        $errorFlag = $successFlag = 0;
+        $data = [];
+        $type = base64_decode($request->type);
+        if($type == 3){ //Customer
+            $obj = new Customer;
+        } elseif($type == 1){ //Company
+            $obj = new CompanyProfile;
+        } elseif($type == 2){ //Staff
+            $obj = new StaffProfile;
+        }
+
+        $res = $obj::where('reset_token',$request->token)->first();
+        if(!empty(($res))) {
+            $time = $res->reset_token_date_time;
+            $new_time = $my_date_time = date('Y-m-d H:i:s', strtotime($time.' +1 hour'));
+            $current_time = date('Y-m-d H:i:s');
+            if(strtotime($current_time) > strtotime($new_time)) {
+                $errorFlag=1;
+                $msg = 'Token is expired!';
+            }
+            $successFlag=1;
+            $data = ['token'=>$request->token,'type'=>base64_encode($type)];
+        } else {
+            $errorFlag=1;
+            $msg = 'Invalid token!';
+        }
+
+        if($errorFlag == 1){
+            return redirect()->route('common.login')->with('error_msg',$msg);
+        }
+        if($successFlag == 1){
+            return view('common.reset_password',$data);
+        }
+    }
+
+    public function updatePassword(Request $request) {
+        try {
+            $this->validate($request, [
+                'token' => 'required',
+                'type' => 'required',
+                'three_latter_code' => 'required',
+                'email' => 'required|email',
+                'new_password' => 'required|required_with:confirm_new_password|same:confirm_new_password',
+                'confirm_new_password' => 'required'
+            ]);
+            $type = base64_decode($request->type);
+            if($type == 3){ //Customer
+                $obj = new Customer;
+                $db_email_field = 'email';
+            }elseif($type == 1){ //Company
+                $obj = new CompanyProfile;
+                $db_email_field = 'company_correspondence_email';
+            }elseif($type == 2){ //Staff
+                $obj = new StaffProfile;
+                $db_email_field = 'email';
+            }
+
+            $res = $obj::where([$db_email_field=>$request->email,'three_latter_code'=>$request->three_latter_code,'reset_token'=>$request->token]);
+            $res1 = $res->first();
+            if(!empty($res1)){
+                $res->update(['password'=>\Hash::make($request->new_password),'reset_token'=>null]);
+                return redirect()->route('common.login')->with('success_msg','Password Successfully reset.');
+            } else {
+                return redirect()->route('common.login')->with('error_msg','Data not match');           
+            }
+        } catch (Exception $e) {
+            return redirect()->route('customer.login')->with('error_msg','Something went wrong');
         }
     }
 }

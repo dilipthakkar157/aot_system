@@ -10,6 +10,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CompanyDashboardController;
 use App\Http\Controllers\StaffDashboardController;
+use App\Http\Controllers\CustomerProfileController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +39,6 @@ Route::get('/optimize', function () {
 
 Route::get('/company', [CompanyController::class, 'create'])->name('company');
 Route::post('/add-company', [CompanyController::class, 'store'])->name('add-company');
-Route::get('/company/reset-password', [CompanyController::class, 'resetPassword'])->name('company.reset-password');
-Route::post('/company/update-password', [CompanyController::class, 'updatePassword'])->name('company.update-password');
 Route::get('/staff/reset-password', [StaffController::class, 'resetPassword'])->name('staff.reset-password');
 Route::post('/staff/update-password', [StaffController::class, 'updatePassword'])->name('staff.update-password');
 
@@ -54,9 +53,11 @@ Route::get('/get-states/{country_id}', [CommonClassController::class, 'getStates
 Route::get('/get-cities/{state_id}', [CommonClassController::class, 'getCities'])->name('get-cities');
 Route::get('/get-roles', [CommonClassController::class, 'getRoles'])->name('get-roles');
 Route::get('/get-permissions/{role_id}', [CommonClassController::class, 'getPermissions'])->name('get-permissions');
+Route::get('/reset-password', [CommonClassController::class, 'resetPassword'])->name('common.reset-password');
+Route::post('/update-password', [CommonClassController::class, 'updatePassword'])->name('common.update-password');
 /*Common Routes - END*/
 
-Route::get('/admin/login', [LoginController::class, 'login'])->name('admin.login');
+/*Route::get('/admin/login', [LoginController::class, 'login'])->name('admin.login');
 Route::post('/admin/do-login', [LoginController::class, 'doLogin'])->name('admin.do-login');
 
 Route::prefix('/admin')->middleware('adminAccess')->group(function () {
@@ -64,23 +65,19 @@ Route::prefix('/admin')->middleware('adminAccess')->group(function () {
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 	Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
-	/*Company Profile Start*/	
 	Route::get('/company-profile', [ManageCompanyProfileController::class, 'index'])->name('admin.company-profile');
 	Route::get('/company-profile/list', [ManageCompanyProfileController::class, 'list'])->name('admin.company-profile.list');
 	Route::get('/company-profile/edit/{id}', [ManageCompanyProfileController::class, 'edit'])->name('admin.company-profile.edit');
 	Route::post('/company-profile/update', [ManageCompanyProfileController::class, 'update'])->name('admin.company-profile.update');
 	Route::delete('/company-profile/delete/{id}', [ManageCompanyProfileController::class, 'destroy'])->name('admin.company-profile.delete');
-	/*Company Profile End*/
 
-	/*Staff Profile Routes Start*/
 	Route::get('/staff-role-permission', [ManageStaffRolePermissionController::class, 'index'])->name('admin.staff-role-permission');
 	Route::get('/staff-role-permission/list', [ManageStaffRolePermissionController::class, 'list'])->name('admin.staff-role-permission.list');
 	Route::post('/staff-role-permission/store', [ManageStaffRolePermissionController::class, 'store'])->name('admin.staff-role-permission.store');
 	Route::get('/staff-role-permission/edit/{id}', [ManageStaffRolePermissionController::class, 'edit'])->name('admin.staff-role-permission.edit');
 	Route::delete('/staff-role-permission/delete/{id}', [ManageStaffRolePermissionController::class, 'destroy'])->name('admin.staff-role-permission.delete');
-	/*Staff Profile Routes End*/
 
-});
+});*/
 
 Route::prefix('/company')->middleware('companyAccess')->group(function () {
 	Route::get('/dashboard', [CompanyDashboardController::class, 'index'])->name('comapany.dashboard');
@@ -103,3 +100,7 @@ Route::prefix('/staff')->middleware('staffAccess')->group(function () {
 	Route::get('/edit_profile', [StaffDashboardController::class, 'editProfile'])->name('staff.edit_profile');	
 	Route::post('/update', [StaffDashboardController::class, 'updateStaff'])->name('staff.update');
 });
+
+Route::get('/customer', [CustomerProfileController::class, 'registration'])->name('customer.register');
+Route::post('/customer/add-customer', [CustomerProfileController::class, 'doRegistration'])->name('customer.add-customer');
+Route::get('/customer/resetpassword', [CustomerProfileController::class, 'resetPassword'])->name('customer.reset-password');

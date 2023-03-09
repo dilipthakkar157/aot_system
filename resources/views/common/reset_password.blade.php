@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>ForgotPassword</title>
+<title>Reset Password</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -47,26 +47,21 @@
 <div class="limiter">
 <div class="container-login100">
 <div class="wrap-login100 p-t-65 p-b-20">
-<form class="login100-form validate-form" action="{{ route('common.do-forgotpassword') }}" method="POST">
-@csrf
-<span class="login100-form-title p-b-50">
-ForgotPassword
-</span>
-@if (\Session::has('success_msg'))
-<div class="alert alert-success">
-    <ul>
-        <li>{!! \Session::get('success_msg') !!}</li>
-    </ul>
-</div>
-@endif
-
-@if (\Session::has('error_msg'))
+@if (\Session::has('msg'))
 <div class="alert alert-danger">
     <ul>
-        <li>{!! \Session::get('error_msg') !!}</li>
+        <li>{!! \Session::get('msg') !!}</li>
     </ul>
 </div>
 @endif
+<form class="login100-form validate-form" action="{{route('common.update-password')}}" method="POST">
+<input type="hidden" name="token" value="{{ $token }}">
+<input type="hidden" name="type" value="{{ $type }}">
+@csrf
+<span class="login100-form-title p-b-50">
+Reset Password
+</span>
+
 <div class="wrap-input100 validate-input m-t-20 m-b-35" data-validate="Enter 3LC">
 <input class="input100" type="text" name="three_latter_code" id="three_latter_code">
 <span class="focus-input100" data-placeholder="Enter 3LC"></span>
@@ -74,27 +69,34 @@ ForgotPassword
   <div class="error">{{ $errors->first('three_latter_code') }}</div>
 @endif
 </div>
+
 <div class="wrap-input100 validate-input m-t-20 m-b-35" data-validate="Enter Email">
-<input class="input100" type="email" name="email_id" id="email_id">
+<input class="input100" type="email" name="email" id="email">
 <span class="focus-input100" data-placeholder="Enter Email"></span>
-@if($errors->has('email_id'))
-  <div class="error">{{ $errors->first('email_id') }}</div>
+@if($errors->has('email'))
+  <div class="error">{{ $errors->first('email') }}</div>
+@endif
+</div>
+
+<div class="wrap-input100 validate-input m-t-20 m-b-35" data-validate="Enter New Password">
+<input class="input100" type="password" name="new_password" id="new_password">
+<span class="focus-input100" data-placeholder="Enter New Password"></span>
+@if($errors->has('new_password'))
+  <div class="error">{{ $errors->first('new_password') }}</div>
+@endif
+</div>
+<div class="wrap-input100 validate-input m-b-50" data-validate="Enter Confirm New Password">
+<input class="input100" type="password" name="confirm_new_password" id="confirm_new_password">
+<span class="focus-input100" data-placeholder="Enter Confirm New Password"></span>
+@if($errors->has('confirm_new_password'))
+  <div class="error">{{ $errors->first('confirm_new_password') }}</div>
 @endif
 </div>
 <div class="container-login100-form-btn">
-<button type="submit" name="btn_sign_in" class="login100-form-btn">
-Submit
+<button type="submit" name="btnReset" class="login100-form-btn">
+Reset
 </button>
 </div>
-
-<div class="login-more p-t-40" style="text-align: center;">
-              <span class="txt1">
-              Click here for login?
-              </span>
-              <a href="{{ route('common.login') }}" class="txt2">
-              Sign in
-              </a>
-              </div>
 
 </form>
 </div>
