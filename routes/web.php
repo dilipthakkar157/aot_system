@@ -107,6 +107,7 @@ Route::prefix('/staff')->middleware('staffAccess')->group(function () {
 
 Route::get('/customer', [CustomerProfileController::class, 'registration'])->name('customer.register');
 Route::post('/customer/add-customer', [CustomerProfileController::class, 'doRegistration'])->name('customer.add-customer');
+Route::get('/customer/pdf/{customer_id}', [CustomerProfileController::class, 'generatePDF'])->name('customer.geneate-pdf');
 
 Route::prefix('/customer')->middleware('customerAccess')->group(function () {
 	Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');

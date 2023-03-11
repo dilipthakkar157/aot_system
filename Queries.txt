@@ -15,3 +15,10 @@ Did i need to send an email to company after registration with login details or 
 ForgotPassword - Staff  & Company - Done
 Login - Common (Based on Guard & Siderbar) - Done
 ChangePassword & Logout - Staff & Company - Done
+
+=====================================================================
+
+06-03-2023 to 12-03-2023
+Common Login,ForgotPassword,ResetPassword and ChangePassword for Company,Customer,Staff.
+Register Customer
+Company -> Manage Customer

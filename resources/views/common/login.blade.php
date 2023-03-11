@@ -111,9 +111,18 @@ Login
     </div>
     <div>
     <span class="txt1">
-    Don’t have an account?
+    Don’t have an company account?
     </span>
     <a href="{{ route('company') }}" class="txt2">
+    Sign up
+    </a>
+    </div>
+
+    <div>
+    <span class="txt1">
+    Don’t have an customer account?
+    </span>
+    <a href="{{ route('customer.register') }}" class="txt2">
     Sign up
     </a>
     </div>

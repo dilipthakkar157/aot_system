@@ -40,6 +40,7 @@
 
 <link rel="stylesheet" type="text/css" href="{{url('assets/css/util.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url('assets/css/main.css')}}">
+<link href="{{url('assets/css/jquery-ui.css')}}" rel="stylesheet" >
 
 <meta name="robots" content="noindex, follow">
 </head>
@@ -47,7 +48,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-65 p-b-20" style="width: 60%">
-               <form class="login100-form validate-form" action="{{ route('customer.add-customer') }}" method="POST">
+               <form class="login100-form validate-form" name="frmRegisterCustomer" action="{{ route('customer.add-customer') }}" method="POST">
                   @csrf
                   <span class="login100-form-title p-b-50">
                   Customer Profile
@@ -59,6 +60,7 @@
                             </ul>
                         </div>
                     @endif
+					<input type="hidden" name="is_tc_accepted" id="is_tc_accepted" value="0">
                   	<div class="col-md-6">
 				   		<div class="form-group">
 		                  	<div class="wrap-input100 validate-input m-b-35" data-validate="Enter First Name">
@@ -136,6 +138,12 @@
 		                  	</div>
 		                </div>
 		            </div>
+					<div class="col-md-12">
+				   		<div class="form-group custom-checkbox">
+							<input type="checkbox" id="chk_accept_confirmation" name="chk_accept_confirmation">
+							<label for="chk_accept_confirmation">I confirm that all data are correct and true.</label>
+						</div>
+					</div>
                   	<div class="container-login100-form-btn">
 	                     <button type="submit" name="btn_sign_up" class="login100-form-btn">
 	                     Register
@@ -155,8 +163,44 @@
 
 		</div>
 	</div>
-	<script src="{{url('assets/vendor_login/jquery/jquery-3.2.1.min.js') }}"></script>
 
+	<div class="modal fade" id="accept_confirm_modal" role="dialog">
+  		<div class="modal-dialog">
+			<div class="modal-content">
+				<form method="POST" id="frmTc">
+					<div class="modal-header">
+						<h4 class="modal-title">Accept Confirmation</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-danger tc_error_msg"></div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="ac_first_name">First Name: <span class="required">*</span></label>
+									<input type="text" class="form-control" id="ac_first_name" placeholder="Enter First Name" name="ac_first_name">
+									<span id="ac_first_name-error" class="errors_class"></span>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="ac_last_name">Last Name: <span class="required">*</span></label>
+									<input type="text" class="form-control" id="ac_last_name" placeholder="Enter Last Name" name="ac_last_name">
+									<span id="ac_last_name-error" class="errors_class"></span>
+								</div>
+							</div>
+                      	</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btnAcceptConfirmation">Confirm</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>	
+
+	<script src="{{url('assets/vendor_login/jquery/jquery-3.2.1.min.js') }}"></script>
+	<script src="{{url('assets/js/jquery-ui.min.js')}}"></script>
 	<script src="{{url('assets/vendor_login/animsition/animsition.min.js') }}"></script>
 
 	<script src="{{url('assets/vendor_login/bootstrap/popper.js') }}"></script>
@@ -174,3 +218,50 @@
 	<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"70e6bd488b43861a","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.12.0","si":100}' crossorigin="anonymous"></script>
 </body>
 </html>
+
+<script>
+	$(document).ready(function(){
+		$(".tc_error_msg").css("display","none");
+		$("#date_of_birth").datepicker({dateFormat: "dd/mm/yy"});
+		$("#chk_accept_confirmation").on('click', function(e){
+			if($(this).prop("checked") == true) {
+				$("#frmTc").trigger("reset");
+				resetTcFormData();
+				$("#accept_confirm_modal").modal();
+			}
+		});
+
+		$(".btnAcceptConfirmation").on('click', function(e){
+			resetTcFormData();
+			f_name = $.trim($("#ac_first_name").val());
+			l_name = $.trim($("#ac_last_name").val());
+			if(f_name==''){
+				$("#ac_first_name-error").html("Please enter first name");
+				return false;
+			}
+			if(l_name==''){
+				$("#ac_last_name-error").html("Please enter last name");
+				return false;
+			}
+			ui_first_name = $.trim($("#first_name").val());
+			ui_last_name = $.trim($("#last_name").val());
+			if(f_name == ui_first_name && l_name == ui_last_name) {
+				$("#is_tc_accepted").val(1);
+				$("#accept_confirm_modal").modal('hide');
+				return true;
+			} else {
+				$(".tc_error_msg").css("display","block");
+				$(".tc_error_msg").html("First name and Last name must match");
+				return false;	
+			}
+		});
+
+	});
+
+	function resetTcFormData(){
+		$(".tc_error_msg").css("display","none");
+		$(".tc_error_msg").html("");
+		$("#ac_first_name-error").html("");
+		$("#ac_last_name-error").html("");
+	}
+</script>
