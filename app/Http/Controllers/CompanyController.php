@@ -34,7 +34,7 @@ class CompanyController extends Controller
             
             $CompanyProfile = new CompanyProfile;
             $CompanyProfile->company_name = $request->company_name;
-            $CompanyProfile->username = strtoupper($username);
+            $CompanyProfile->three_letter_code = strtoupper($username);
             $CompanyProfile->company_correspondence_email = $request->company_correspondence_email;
             $CompanyProfile->company_correspondence_telephone = $request->company_correspondence_telephone;
             $CompanyProfile->company_registration_number = $request->company_registration_number;
@@ -69,7 +69,7 @@ class CompanyController extends Controller
 
     public function generateTokenNew($combine_name){
         $three_latter_code = generateToken($combine_name,3);
-        $res = CompanyProfile::where('username',$three_latter_code)->count();
+        $res = CompanyProfile::where('three_letter_code',$three_latter_code)->count();
         if($res>0){
             $this->generateTokenNew($combine_name);
         } else {

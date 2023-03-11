@@ -182,19 +182,26 @@
 						    		    		<div class="profile-name"></div>
 						    		    	</div>
 					    		    		<hr>
-					    		    		<a class="dropdown-item" href="javascript:void(0)" onclick="staffChangePassword()"> Change password</a>
+					    		    		<a class="dropdown-item" href="javascript:void(0)" onclick="commonChangePassword(2)"> Change password</a>
 					    		    		<a class="dropdown-item" onclick="editStaffProfile()" id="editCompanyProfile" href="javascript:void(0)"> My profile</a>
-					    		        	<a class="btn-other-orange orange-w mt-24" href="{{ route('staff.logout') }}">Log Out</a>
 					    		    	@elseif(\Auth::guard('company_profile')->check())
 					    		    		<div class="d-flexx mt-24">
 						    		    		<div class=""> <img class="profile-img" height="50" width="50" src="{{ url('assets/images/dummy.jpeg') }}" alt=""></div>
 						    		    		<div class="profile-name"></div>
 						    		    	</div>
 					    		    		<hr>
-					    		    		<a class="dropdown-item" href="javascript:void(0)" onclick="companyChangePassword()"> Change password</a>
+					    		    		<a class="dropdown-item" href="javascript:void(0)" onclick="commonChangePassword(1)"> Change password</a>
 					    		    		<a class="dropdown-item" onclick="editCompanyProfile()" id="editCompanyProfile" href="javascript:void(0)"> My profile</a>
-					    		        	<a class="btn-other-orange orange-w mt-24" href="{{ route('company.logout') }}">Log Out</a>
+										@elseif(\Auth::guard('customer')->check())
+										<div class="d-flexx mt-24">
+						    		    		<div class=""> <img class="profile-img" height="50" width="50" src="{{ url('assets/images/dummy.jpeg') }}" alt=""></div>
+						    		    		<div class="profile-name"></div>
+						    		    	</div>
+					    		    		<hr>
+											<a class="dropdown-item" href="javascript:void(0);" onclick="commonChangePassword(3)"> Change password</a>
+					    		    		<a class="dropdown-item" id="editCustomerProfile" href="javascript:void(0)"> My profile</a>
 					    		    	@endif
+										<a class="btn-other-orange orange-w mt-24" href="{{ route('common.logout') }}">Log Out</a>
 					    		    </div>
 					    		</li>
 					    	</ul>

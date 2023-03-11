@@ -52,6 +52,10 @@ return [
             'driver' => 'session',
             'provider' => 'staff_profile',
         ],
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customer',
+        ],
     ],
 
     /*
@@ -87,6 +91,10 @@ return [
         'staff_profile' => [
             'driver' => 'eloquent',
             'model' => App\Models\StaffProfile::class,
+        ],
+        'customer' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Customer::class,
         ]
         // 'users' => [
         //     'driver' => 'database',

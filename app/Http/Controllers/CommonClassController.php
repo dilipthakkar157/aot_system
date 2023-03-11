@@ -63,13 +63,24 @@ class CommonClassController extends Controller
         
         if (\Auth::guard('company_profile')->attempt(['three_letter_code' => $request->username, 'password' => $request->password])) {
             return redirect()->route('comapany.dashboard');
+        } else if (\Auth::guard('staff_profile')->attempt(['three_letter_code' => $request->username, 'password' => $request->password])) {
+            return redirect()->route('staff.dashboard');
+        } else if (\Auth::guard('customer')->attempt(['three_letter_code' => $request->username, 'password' => $request->password])) {
+            return redirect()->route('customer.dashboard');
         } else {
-            if (\Auth::guard('staff_profile')->attempt(['three_letter_code' => $request->username, 'password' => $request->password])) {
-                return redirect()->route('staff.dashboard');
-            } else {
-                return redirect()->route('common.login')->with('msg','Invalid details.');
-            }
+            return redirect()->route('common.login')->with('msg','Invalid details.');
         }
+    }
+
+    public function doLogout(Request $request){
+        if(\Auth::guard('company_profile')->check()){
+            \Auth::guard('company_profile')->logout();
+        }elseif(\Auth::guard('staff_profile')->check()){
+            \Auth::guard('staff_profile')->logout();
+        }elseif(\Auth::guard('customer')->check()){
+            \Auth::guard('customer')->logout();
+        }
+        return redirect()->route('common.login');
     }
 
     public function forgotPassword(){
@@ -197,7 +208,7 @@ class CommonClassController extends Controller
                 $db_email_field = 'email';
             }
 
-            $res = $obj::where([$db_email_field=>$request->email,'three_latter_code'=>$request->three_latter_code,'reset_token'=>$request->token]);
+            $res = $obj::where([$db_email_field=>$request->email,'three_letter_code'=>$request->three_latter_code,'reset_token'=>$request->token]);
             $res1 = $res->first();
             if(!empty($res1)){
                 $res->update(['password'=>\Hash::make($request->new_password),'reset_token'=>null]);
@@ -207,6 +218,44 @@ class CommonClassController extends Controller
             }
         } catch (Exception $e) {
             return redirect()->route('customer.login')->with('error_msg','Something went wrong');
+        }
+    }
+
+    public function changePassword(Request $request){
+        try {
+	    	$validator = \Validator::make($request->all(), [
+	            'type' => 'required',
+                'current_password' => 'required|min:6',
+	            'new_password' => 'required|min:6|required_with:confirm_new_password|same:confirm_new_password',
+	            'confirm_new_password' => 'required|min:6',
+	        ]);
+
+	        if ($validator->fails()) {
+                return response()->json(['status'=>false,'messages' => $validator->errors(), 'data'=>[] ]);
+            }
+
+            if($request->type == 1){
+    		    $id = \Auth::guard('company_profile')->user()->id;
+                $obj = new CompanyProfile;
+            }else if($request->type == 2){
+                $id = \Auth::guard('staff_profile')->user()->id;
+                $obj = new StaffProfile;
+            }else if($request->type == 3){
+                $id = \Auth::guard('customer')->user()->id;
+                $obj = new Customer;
+            }
+
+            $res = $obj::where('id', '=', $id)->first();
+            if (!Hash::check($request->current_password, $res->password)) {
+            	$errorMsg = array('current_password'=>array('Current password is invalid'));
+            	return response()->json(['status'=>false,'messages' => $errorMsg, 'data'=>[] ]);
+            }
+
+            $obj::where('id', '=', $id)->update(['password'=>Hash::make($request->new_password)]);
+            return response()->json(['status'=>true,'messages' => 'Password successfully updated.', 'data'=>[] ]);
+
+	    } catch (Exception $e) {
+            return response()->json(['status'=>false,'messages' => $e->getMessage(), 'data'=>[] ]);
         }
     }
 }

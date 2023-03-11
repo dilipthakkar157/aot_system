@@ -98,30 +98,30 @@ class CompanyDashboardController extends Controller
         }
     }
 
-    public function changePassword(Request $request){
-    	try {
-    		$id = \Auth::guard('company_profile')->user()->id;
-	    	$validator = \Validator::make($request->all(), [
-	            'current_password' => 'required|min:6',
-	            'new_password' => 'required|min:6|required_with:confirm_new_password|same:confirm_new_password',
-	            'confirm_new_password' => 'required|min:6',
-	        ]);
+    // public function changePassword(Request $request){
+    // 	try {
+    // 		$id = \Auth::guard('company_profile')->user()->id;
+	//     	$validator = \Validator::make($request->all(), [
+	//             'current_password' => 'required|min:6',
+	//             'new_password' => 'required|min:6|required_with:confirm_new_password|same:confirm_new_password',
+	//             'confirm_new_password' => 'required|min:6',
+	//         ]);
 
-	        if ($validator->fails()) {
-                return response()->json(['status'=>false,'messages' => $validator->errors(), 'data'=>[] ]);
-            }
+	//         if ($validator->fails()) {
+    //             return response()->json(['status'=>false,'messages' => $validator->errors(), 'data'=>[] ]);
+    //         }
 
-            $company = CompanyProfile::where('id', '=', $id)->first();
-            if (!Hash::check($request->current_password, $company->password)) {
-            	$errorMsg = array('current_password'=>array('Current password is invalid'));
-            	return response()->json(['status'=>false,'messages' => $errorMsg, 'data'=>[] ]);
-            }
+    //         $company = CompanyProfile::where('id', '=', $id)->first();
+    //         if (!Hash::check($request->current_password, $company->password)) {
+    //         	$errorMsg = array('current_password'=>array('Current password is invalid'));
+    //         	return response()->json(['status'=>false,'messages' => $errorMsg, 'data'=>[] ]);
+    //         }
 
-            CompanyProfile::where('id', '=', $id)->update(['password'=>Hash::make($request->new_password)]);
-            return response()->json(['status'=>true,'messages' => 'Password successfully updated.', 'data'=>[] ]);
+    //         CompanyProfile::where('id', '=', $id)->update(['password'=>Hash::make($request->new_password)]);
+    //         return response()->json(['status'=>true,'messages' => 'Password successfully updated.', 'data'=>[] ]);
 
-	    } catch (Exception $e) {
-            return response()->json(['status'=>false,'messages' => $e->getMessage(), 'data'=>[] ]);
-        }
-    }
+	//     } catch (Exception $e) {
+    //         return response()->json(['status'=>false,'messages' => $e->getMessage(), 'data'=>[] ]);
+    //     }
+    // }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CompanyDashboardController;
 use App\Http\Controllers\StaffDashboardController;
 use App\Http\Controllers\CustomerProfileController;
+use App\Http\Controllers\CustomerDashboardController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -37,17 +38,12 @@ Route::get('/optimize', function () {
     return redirect('/company');
 });
 
-Route::get('/company', [CompanyController::class, 'create'])->name('company');
-Route::post('/add-company', [CompanyController::class, 'store'])->name('add-company');
-Route::get('/staff/reset-password', [StaffController::class, 'resetPassword'])->name('staff.reset-password');
-Route::post('/staff/update-password', [StaffController::class, 'updatePassword'])->name('staff.update-password');
-
 /*Common Routes - START*/
 Route::get('/login', [CommonClassController::class, 'login'])->name('common.login');
 Route::post('/do-login', [CommonClassController::class, 'doLogin'])->name('common.do-login');
+Route::get('/do-logout', [CommonClassController::class, 'doLogout'])->name('common.logout');
 Route::get('/forgotpassword', [CommonClassController::class, 'forgotPassword'])->name('common.forgotpassword');
 Route::post('/do-forgotpassword', [CommonClassController::class, 'doForgotpassword'])->name('common.do-forgotpassword');
-
 Route::get('/get-countries', [CommonClassController::class, 'getCounties'])->name('get-countries');
 Route::get('/get-states/{country_id}', [CommonClassController::class, 'getStates'])->name('get-states');
 Route::get('/get-cities/{state_id}', [CommonClassController::class, 'getCities'])->name('get-cities');
@@ -55,6 +51,7 @@ Route::get('/get-roles', [CommonClassController::class, 'getRoles'])->name('get-
 Route::get('/get-permissions/{role_id}', [CommonClassController::class, 'getPermissions'])->name('get-permissions');
 Route::get('/reset-password', [CommonClassController::class, 'resetPassword'])->name('common.reset-password');
 Route::post('/update-password', [CommonClassController::class, 'updatePassword'])->name('common.update-password');
+Route::post('/change-password', [CommonClassController::class, 'changePassword'])->name('common.change_password');
 /*Common Routes - END*/
 
 /*Route::get('/admin/login', [LoginController::class, 'login'])->name('admin.login');
@@ -79,12 +76,13 @@ Route::prefix('/admin')->middleware('adminAccess')->group(function () {
 
 });*/
 
+Route::get('/company', [CompanyController::class, 'create'])->name('company');
+Route::post('/add-company', [CompanyController::class, 'store'])->name('add-company');
+
 Route::prefix('/company')->middleware('companyAccess')->group(function () {
 	Route::get('/dashboard', [CompanyDashboardController::class, 'index'])->name('comapany.dashboard');
-	Route::get('/logout', [CompanyController::class, 'companyProfileLogout'])->name('company.logout');
 	Route::get('/profile/edit', [CompanyDashboardController::class, 'editProfile'])->name('comapany.profile.edit');
 	Route::post('/profile/update', [CompanyDashboardController::class, 'updateProfile'])->name('comapany.profile.update');
-	Route::post('/change_password', [CompanyDashboardController::class, 'changePassword'])->name('change_password');
 
 	Route::get('/staff', [StaffController::class, 'index'])->name('company.staff');
 	Route::get('/staff/list', [StaffController::class, 'list'])->name('company.staff.list');
@@ -95,12 +93,13 @@ Route::prefix('/company')->middleware('companyAccess')->group(function () {
 
 Route::prefix('/staff')->middleware('staffAccess')->group(function () {
 	Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('staff.dashboard');
-	Route::get('/logout', [StaffDashboardController::class, 'logout'])->name('staff.logout');
-	Route::post('/change_password', [StaffDashboardController::class, 'changePassword'])->name('staff.change_password');
 	Route::get('/edit_profile', [StaffDashboardController::class, 'editProfile'])->name('staff.edit_profile');	
 	Route::post('/update', [StaffDashboardController::class, 'updateStaff'])->name('staff.update');
 });
 
 Route::get('/customer', [CustomerProfileController::class, 'registration'])->name('customer.register');
 Route::post('/customer/add-customer', [CustomerProfileController::class, 'doRegistration'])->name('customer.add-customer');
-Route::get('/customer/resetpassword', [CustomerProfileController::class, 'resetPassword'])->name('customer.reset-password');
+
+Route::prefix('/customer')->middleware('customerAccess')->group(function () {
+	Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');
+});

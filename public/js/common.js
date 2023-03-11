@@ -56,47 +56,23 @@ $(document).ready(function(){
 	    });
 	});
 
-	$("#btnCompanyChangePassword").on('click', function(e){
+	$("#btnCommonChangePassword").on('click', function(e){
 		e.preventDefault();
 	    $.ajax({
 	    	headers: {
 		        'X-CSRF-TOKEN': token
 		    },
-	        url: url + "/company/change_password",
+	        url: url + "/change-password",
 	        type: 'POST',
-	        data: $("#frmCompanyChangePassword").serialize(),
+	        data: $("#frmCommonChangePassword").serialize(),
 	        dataType : "json",
 	        success: function (data) {
 	            if(data['status'] == false) {
 		    		printErrorMsg(data['messages']);
 		    	} else {
-					$("#companyChangePassword").modal('hide');
+					$("#commonChangePassword").modal('hide');
 		    		alert("Password successfully changed.");
-		    		window.location.href = url + "/company/logout";
-		    	}
-	        },error: function (error) {
-	        	console.log(error);
-	        }
-	    });
-	});
-
-	$("#btnStaffChangePassword").on('click', function(e){
-		e.preventDefault();
-	    $.ajax({
-	    	headers: {
-		        'X-CSRF-TOKEN': token
-		    },
-	        url: url + "/staff/change_password",
-	        type: 'POST',
-	        data: $("#frmStaffChangePassword").serialize(),
-	        dataType : "json",
-	        success: function (data) {
-	            if(data['status'] == false) {
-		    		printErrorMsg(data['messages']);
-		    	} else {
-					$("#staffChangePassword").modal('hide');
-		    		alert("Password successfully changed.");
-		    		window.location.href = url + "/staff/logout";
+		    		window.location.href = url + "/common/logout";
 		    	}
 	        },error: function (error) {
 	        	console.log(error);
@@ -367,14 +343,17 @@ function printErrorMsg(errors) {
 	});
 }
 
-function companyChangePassword(){
+function commonChangePassword(type){
 	$(".errors_class").html("");
-	$("#companyChangePassword").modal();
-}
-
-function staffChangePassword(){
-	$(".errors_class").html("");
-	$("#staffChangePassword").modal();
+	if(type==1){
+		$("#common_changepassword_header").html("Company Change Password");
+	}else if(type==2){
+		$("#common_changepassword_header").html("Staff Change Password");
+	}else if(type==3){
+		$("#common_changepassword_header").html("Customer Change Password");
+	}
+	$("#type").val(type);
+	$("#commonChangePassword").modal();
 }
 
 function editStaffProfile(){
