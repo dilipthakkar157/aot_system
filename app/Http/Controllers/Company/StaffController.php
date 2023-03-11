@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Company;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StaffProfile;
 use App\Models\CompanyProfile;
@@ -134,34 +135,34 @@ class StaffController extends Controller
         return response()->json(['status'=>true,'messages' => 'Staff profile successfully deleted.', 'data'=>[]]);
     }
 
-    public function resetPassword(Request $request) {
-        $res = StaffProfile::where('reset_token',$request->token)->first();
-        if(!empty(($res))){
-            $time = $res->reset_token_date_time;
-            $new_time = $my_date_time = date('Y-m-d H:i:s', strtotime($time.' +1 hour'));
-            $current_time = date('Y-m-d H:i:s');
-            if(strtotime($current_time) > strtotime($new_time)) {
-                return redirect()->route('common.login')->with('error_msg','Token is expired!');    
-            }
-            return view('staff_profile.reset_password',['token'=>$request->token]);
-        } else {
-            return redirect()->route('common.login')->with('error_msg','Invalid token!');
-        }
-    }
+    // public function resetPassword(Request $request) {
+    //     $res = StaffProfile::where('reset_token',$request->token)->first();
+    //     if(!empty(($res))){
+    //         $time = $res->reset_token_date_time;
+    //         $new_time = $my_date_time = date('Y-m-d H:i:s', strtotime($time.' +1 hour'));
+    //         $current_time = date('Y-m-d H:i:s');
+    //         if(strtotime($current_time) > strtotime($new_time)) {
+    //             return redirect()->route('common.login')->with('error_msg','Token is expired!');    
+    //         }
+    //         return view('staff_profile.reset_password',['token'=>$request->token]);
+    //     } else {
+    //         return redirect()->route('common.login')->with('error_msg','Invalid token!');
+    //     }
+    // }
 
-    public function updatePassword(Request $request) {
-        $this->validate($request, [
-            'token' => 'required',
-            'new_password' => 'required|required_with:confirm_new_password|same:confirm_new_password',
-            'confirm_new_password' => 'required'
-        ]);
+    // public function updatePassword(Request $request) {
+    //     $this->validate($request, [
+    //         'token' => 'required',
+    //         'new_password' => 'required|required_with:confirm_new_password|same:confirm_new_password',
+    //         'confirm_new_password' => 'required'
+    //     ]);
 
-        $res = StaffProfile::where('reset_token',$request->token)->first();
-        if(!empty(($res))){
-            StaffProfile::where('id',$res->id)->update(['password'=>\Hash::make($request->new_password),'reset_token'=>null]);
-            return redirect()->route('common.login')->with('success_msg','Password Successfully reset.');
-        } else {
-            return redirect()->route('common.login')->with('error_msg','Invalid token!');
-        }
-    }
+    //     $res = StaffProfile::where('reset_token',$request->token)->first();
+    //     if(!empty(($res))){
+    //         StaffProfile::where('id',$res->id)->update(['password'=>\Hash::make($request->new_password),'reset_token'=>null]);
+    //         return redirect()->route('common.login')->with('success_msg','Password Successfully reset.');
+    //     } else {
+    //         return redirect()->route('common.login')->with('error_msg','Invalid token!');
+    //     }
+    // }
 }

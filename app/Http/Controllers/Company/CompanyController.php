@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Company;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CompanyProfile;
 use Mail;
@@ -62,10 +63,10 @@ class CompanyController extends Controller
         }
     }
 
-    public function companyProfileLogout(){
-        \Auth::guard('company_profile')->logout();
-        return redirect()->route('common.login');
-    }
+    // public function companyProfileLogout(){
+    //     \Auth::guard('company_profile')->logout();
+    //     return redirect()->route('common.login');
+    // }
 
     public function generateTokenNew($combine_name){
         $three_latter_code = generateToken($combine_name,3);

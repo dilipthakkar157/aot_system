@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    $("#date_of_birth").datepicker({dateFormat: "dd/mm/yy"});
 	$("#errorMsg").css("display","none");
 	token = $('meta[name="csrf-token"]').attr('content');
 	url = $('meta[name="baseUrl"]').attr('content');

@@ -28,7 +28,6 @@ $(document).ready(function(){
 					$("#addStaffProfile").modal('hide');					
 		    		$("#successMsg").css("display","block");
 		    		$("#successMsg").html(successRes['messages']);
-		    		// getStaffProfileData();
 		    		table.draw();
 		    	}
 		    },error : function(failRes) {

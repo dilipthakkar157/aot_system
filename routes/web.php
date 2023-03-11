@@ -1,17 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ManageCompanyProfileController;
-use App\Http\Controllers\Admin\ManageStaffRolePermissionController;
 use App\Http\Controllers\CommonClassController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\StaffController;
-use App\Http\Controllers\CompanyDashboardController;
 use App\Http\Controllers\StaffDashboardController;
-use App\Http\Controllers\CustomerProfileController;
-use App\Http\Controllers\CustomerDashboardController;
+// use App\Http\Controllers\Admin\LoginController;
+// use App\Http\Controllers\Admin\DashboardController;
+// use App\Http\Controllers\Admin\ManageCompanyProfileController;
+// use App\Http\Controllers\Admin\ManageStaffRolePermissionController;
+use App\Http\Controllers\Company\CompanyController;
+use App\Http\Controllers\Company\StaffController;
+use App\Http\Controllers\Company\CustomerController;
+use App\Http\Controllers\Company\CompanyDashboardController;
+use App\Http\Controllers\Customer\CustomerProfileController;
+use App\Http\Controllers\Customer\CustomerDashboardController;
 use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +90,13 @@ Route::prefix('/company')->middleware('companyAccess')->group(function () {
 	Route::post('/staff/store', [StaffController::class, 'store'])->name('company.staff.store');
 	Route::get('/staff/edit/{id}', [StaffController::class, 'edit'])->name('company.staff.edit');
 	Route::delete('/staff/delete/{id}', [StaffController::class, 'destroy'])->name('company.staff.delete');
+
+	Route::get('/customer', [CustomerController::class, 'index'])->name('company.customer');
+	Route::get('/customer/list', [CustomerController::class, 'list'])->name('company.customer.list');
+	Route::post('/customer/store', [CustomerController::class, 'store'])->name('company.customer.store');
+	Route::get('/customer/edit/{id}', [CustomerController::class, 'edit'])->name('company.customer.edit');
+	Route::delete('/customer/delete/{id}', [CustomerController::class, 'destroy'])->name('company.customer.delete');
+	
 });
 
 Route::prefix('/staff')->middleware('staffAccess')->group(function () {

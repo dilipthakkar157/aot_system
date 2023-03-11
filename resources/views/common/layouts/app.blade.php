@@ -22,18 +22,13 @@
 	<link href="{{url('assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{url('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet">
 	<link href="{{url('assets/css/custom.css')}}" rel="stylesheet">
-
-	
-	<link rel="stylesheet" type="text/css" href="{{url('assets/css/flag-icon.min.css')}}">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css"> 
-	<script src="{{url('assets/vendors/jquery/dist/jquery.min.js')}}"></script>
-
-	<!-- Script -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link href="{{url('assets/css/flag-icon.min.css')}}" rel="stylesheet">
+	<link href="{{url('assets/css/plus-jakarta-display.min.css')}}" rel="stylesheet"> 
 
 	<!-- jQuery UI -->
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<link href="{{url('assets/css/jquery-ui.css')}}" rel="stylesheet" >
+	<script src="{{url('assets/vendors/jquery/dist/jquery.min.js')}}"></script>
+
 	<style type="text/css">
 		.errors_class{
 			color: red;
@@ -70,8 +65,16 @@
 								<a class="margin_l9" href="{{ route('comapany.dashboard') }}"><img src="{{url('assets/images/dash_white.png')}}" class="icon_padding"> <span class="hide_big">Dashboard</span></a>
 							</li>
 
-							<li class="mt-50">
+							<li class="">
 								<a class="margin_l9" href="{{ route('company.staff') }}"><img src="{{url('assets/images/profile-2user_white.png')}}" class="icon_padding"> <span class="hide_big">Staff Profile </span></a>
+							</li>
+
+							<li class="">
+								<a class="margin_l9" href="{{ route('company.customer') }}"><img src="{{url('assets/images/profile-2user_white.png')}}" class="icon_padding"> <span class="hide_big">Customer Profile </span></a>
+							</li>
+							@elseif(\Auth::guard('customer')->check())
+							<li>
+								<a class="margin_l9" href="{{ route('customer.dashboard') }}"><img src="{{url('assets/images/dash_white.png')}}" class="icon_padding"> <span class="hide_big">Dashboard</span></a>
 							</li>
 							@endif
 
@@ -221,6 +224,7 @@
 				<!-- /footer content -->
 			</div>
 		</div>
+		<script src="{{url('assets/js/jquery-ui.min.js')}}"></script>
 		<script src="{{url('assets/vendors/validator/multifield.js')}}"></script>
 		<script src="{{url('assets/vendors/validator/validator.js')}}"></script>
 		<script src="{{url('assets/vendors/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

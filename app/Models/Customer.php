@@ -13,4 +13,6 @@ class Customer extends Authenticatable
     use SoftDeletes;
     protected $table='customers';
     protected $guard = 'customer';
+
+    protected $fillable = ['id'];
 }

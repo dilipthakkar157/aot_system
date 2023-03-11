@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$("#date_of_birth").datepicker({dateFormat: "dd/mm/yy"});
+	$("#staff_dob").datepicker({dateFormat: "dd/mm/yy"});
 	$("#successMsg").css('display','none');
 	token = $('meta[name="csrf-token"]').attr('content');
 	url = $('meta[name="baseUrl"]').attr('content');
@@ -26,15 +26,15 @@ $(document).ready(function(){
 	});
 
 	$("#btnAddStaff").click(function(){
-		resetForm1();
-		getRoles();
+		resetStaffForm();
+		getStaffRoles();
 		$("#staff_header").html("Add Staff");
 		$("#addStaff").modal();
   	});
 
   	$("#btnSubmitStaffData").click(function(){
-  		role = $("#role").val();
-  		id = $("#id").val();
+  		role = $("#staff_role").val();
+  		id = $("#staff_id").val();
   		$.ajax({
   			headers: {
 		        'X-CSRF-TOKEN': token
@@ -45,9 +45,9 @@ $(document).ready(function(){
 		    dataType : "json",
 		    success : function(successRes) {
 		    	if(successRes['status'] == false) {
-		    		printErrorMsg(successRes['messages']);
+		    		printStaffErrorMsg(successRes['messages']);
 		    	} else {
-		    		resetForm1();
+		    		resetStaffForm();
 					$("#addStaff").modal('hide');					
 		    		$("#successMsg").css("display","block");
 		    		$("#successMsg").html(successRes['messages']);
@@ -60,7 +60,8 @@ $(document).ready(function(){
   	});
 
   	$('body').on('click', '.editStaff', function () {
-  		getRoles();
+		resetStaffForm();
+		getStaffRoles();
   		id = $(this).attr('data-id');
   		$("#staff_header").html("Edit Staff");
 		html = '';
@@ -69,18 +70,18 @@ $(document).ready(function(){
 		    method : "GET",
 		    dataType : "json",
 		    success : function(successRes) {
-		    	$("#id").val(successRes['data']['id']);
-		    	$("#three_letter_code").val(successRes['data']['three_letter_code']);
-		    	$("#prefix").val(successRes['data']['prefix']);
-		    	$("#name").val(successRes['data']['name']);
-		    	$("#middle_name").val(successRes['data']['middle_name']);
-		    	$("#last_name").val(successRes['data']['last_name']);
-		    	$("#citizenship").val(successRes['data']['citizenship']);
-		    	$("#date_of_birth").val(successRes['data']['date_of_birth']);
-		    	$("#passport_id").val(successRes['data']['passport_id']);
-		    	$("#role").val(successRes['data']['role']);
-		    	$("#email").val(successRes['data']['email']);
-		    	getPermissions(successRes['data']['role']);
+		    	$("#staff_id").val(successRes['data']['id']);
+		    	$("#staff_three_letter_code").val(successRes['data']['three_letter_code']);
+		    	$("#staff_prefix").val(successRes['data']['prefix']);
+		    	$("#staff_name").val(successRes['data']['name']);
+		    	$("#staff_middle_name").val(successRes['data']['middle_name']);
+		    	$("#staff_last_name").val(successRes['data']['last_name']);
+		    	$("#staff_citizenship").val(successRes['data']['citizenship']);
+		    	$("#staff_dob").val(successRes['data']['date_of_birth']);
+		    	$("#staff_passport_id").val(successRes['data']['passport_id']);
+		    	$("#staff_role").val(successRes['data']['role']);
+		    	$("#staff_email").val(successRes['data']['email']);
+		    	getStaffPermissions(successRes['data']['role']);
 		    	$("#addStaff").modal();
 		    },error : function(failRes) {
 		    	console.log(failRes);
@@ -110,14 +111,14 @@ $(document).ready(function(){
   	});
 });
 
-function resetForm1(){
-	$("#id").val("0");
+function resetStaffForm(){
+	$("#staff_id").val("0");
 	$('#frmAddStaff').trigger("reset");
 	$(".errors_class").html("");
-	$("#permissions").html('<tr><td colspan="4">No data found</td></tr>');
+	$("#staff_permissions").html('<tr><td colspan="4">No data found</td></tr>');
 }	
 
-function getRoles(){
+function getStaffRoles(){
 	url = $('meta[name="baseUrl"]').attr('content');
 	country = '';
 	$.ajax({
@@ -129,14 +130,14 @@ function getRoles(){
 	    	$.each(successRes['data'], function(k,v) {
 	    		country += '<option value="'+v['id']+'">'+v['role']+'</option>';
 	    	});
-	    	$("#role").html(country);
+	    	$("#staff_role").html(country);
 	    },error : function(failRes) {
 	    	console.log(failRes);
 	    }
 	});
 }
 
-function getPermissions(role_id){
+function getStaffPermissions(role_id){
 	url = $('meta[name="baseUrl"]').attr('content');
 	var permissions = '';
 	$.ajax({
@@ -157,9 +158,15 @@ function getPermissions(role_id){
 		    } else {
 		    	permissions += '<tr><td colspan="4">No data found</td></tr>';
 		    }
-	    	$("#permissions").html(permissions);
+	    	$("#staff_permissions").html(permissions);
 	    },error : function(failRes) {
 	    	console.log(failRes);
 	    }
+	});
+}
+
+function printStaffErrorMsg(errors){
+	$.each(errors, function(k,v) {
+		$("#staff_"+k+"-error").html(v);
 	});
 }

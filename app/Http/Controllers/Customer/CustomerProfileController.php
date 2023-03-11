@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Customer;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use DB;
@@ -69,20 +70,20 @@ class CustomerProfileController extends Controller
         }
     }
 
-    public function resetPassword(Request $request) {
-        $res = Customer::where('reset_token',$request->token)->first();
-        if(!empty(($res))){
-            $time = $res->reset_token_date_time;
-            $new_time = $my_date_time = date('Y-m-d H:i:s', strtotime($time.' +1 hour'));
-            $current_time = date('Y-m-d H:i:s');
-            if(strtotime($current_time) > strtotime($new_time)) {
-                return redirect()->route('common.login')->with('error_msg','Token is expired!');    
-            }
-            return view('customer.reset_password',['token'=>$request->token]);
-        } else {
-            return redirect()->route('common.login')->with('error_msg','Invalid token!');
-        }
-    }
+    // public function resetPassword(Request $request) {
+    //     $res = Customer::where('reset_token',$request->token)->first();
+    //     if(!empty(($res))){
+    //         $time = $res->reset_token_date_time;
+    //         $new_time = $my_date_time = date('Y-m-d H:i:s', strtotime($time.' +1 hour'));
+    //         $current_time = date('Y-m-d H:i:s');
+    //         if(strtotime($current_time) > strtotime($new_time)) {
+    //             return redirect()->route('common.login')->with('error_msg','Token is expired!');    
+    //         }
+    //         return view('customer.reset_password',['token'=>$request->token]);
+    //     } else {
+    //         return redirect()->route('common.login')->with('error_msg','Invalid token!');
+    //     }
+    // }
 
     public function generateTokenNew($combine_name){
         $three_latter_code = generateToken($combine_name,3);
